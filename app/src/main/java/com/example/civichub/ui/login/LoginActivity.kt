@@ -1,6 +1,7 @@
 package com.example.civichub.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +19,7 @@ import android.widget.Toast
 
 import com.example.civichub.R
 import com.example.civichub.RegisterActivity
+import com.example.civichub.data.LoginRepository
 
 class LoginActivity : AppCompatActivity() {
 
@@ -97,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString(), this.context)
+//                val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
             }
         }
 

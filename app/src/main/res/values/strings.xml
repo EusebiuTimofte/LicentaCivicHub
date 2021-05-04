@@ -13,4 +13,6 @@
     <string name="email_hint">E-mail</string>
     <string name="password_hint">Password</string>
     <string name="repeat_password_hint">Repeat password</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="shared_preferences_file">com.example.civichub.shared.preferences</string>
 </resources>

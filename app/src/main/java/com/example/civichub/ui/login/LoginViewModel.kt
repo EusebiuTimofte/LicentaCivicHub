@@ -1,6 +1,8 @@
 package com.example.civichub.ui.login
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +11,7 @@ import android.util.Patterns
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.civichub.MapsActivity
 import com.example.civichub.data.LoginRepository
 import com.example.civichub.data.Result
 
@@ -27,6 +30,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         loginRepository.login(username, password, context){
             if (it is Result.Success) {
                 _loginResult.value = LoginResult(success = LoggedInUserView(displayName = it.data.displayName))
+
             } else {
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
