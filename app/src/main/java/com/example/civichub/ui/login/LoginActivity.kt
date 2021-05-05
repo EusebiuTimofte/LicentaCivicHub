@@ -37,6 +37,13 @@ class LoginActivity : AppCompatActivity() {
         val loading = findViewById<ProgressBar>(R.id.loading)
         val register = findViewById<Button>(R.id.registerButton)
 
+        val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+        if (sharedPref.getString(getString(R.string.logged_user_mail), "") != ""){
+            val intent = Intent(this.applicationContext, MapsActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
 
@@ -100,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString(), this.context) {
-                    val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+
                     if (it != null){
                         with(sharedPref.edit()){
                             putString(getString(R.string.logged_user_mail), it.mail)

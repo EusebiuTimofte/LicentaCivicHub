@@ -2,6 +2,10 @@ package com.example.civichub
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -9,10 +13,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.json.JSONArray
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
+    private lateinit var jsonArray: JSONArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +41,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val queue = Volley.newRequestQueue(this.applicationContext)
+        val url = "http://10.0.2.2:5000/api/issue/all"
+
+        // Request a string response from the provided URL.
+        val request = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                // Display the first 500 characters of the response string.
+                jsonArray = JSONArray(response)
+                Log.d("json array", jsonArray.toString(2))
+                for (i in 0 until jsonArray.length()) {
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    val latitude = jsonObject.optString("latitude").toDouble()
+                    val longitude = jsonObject.optString("longitude").toDouble()
+                    val id = jsonObject.optString("id") as String
+                    mMap.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title(id))
+                    if (i == jsonArray.length()-1){
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
+                    }
+                }
+
+
+            },
+            { error ->
+                Log.d("Issues", error.toString())
+                error.printStackTrace()
+            })
+
+
+        // Add the request to the RequestQueue.
+        queue.add(request)
+
+
     }
 }
