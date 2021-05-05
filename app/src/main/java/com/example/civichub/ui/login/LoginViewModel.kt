@@ -16,6 +16,7 @@ import com.example.civichub.data.LoginRepository
 import com.example.civichub.data.Result
 
 import com.example.civichub.R
+import com.example.civichub.data.model.LoggedInUser
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -25,19 +26,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    fun login(username: String, password: String, context: Context) {
+    fun login(username: String, password: String, context: Context, callback: (result: LoggedInUser?) -> Unit) {
         // can be launched in a separate asynchronous job
         loginRepository.login(username, password, context){
             if (it is Result.Success) {
                 _loginResult.value = LoginResult(success = LoggedInUserView(displayName = it.data.displayName))
-
+                callback(it.data)
             } else {
                 _loginResult.value = LoginResult(error = R.string.login_failed)
+                callback(null)
             }
         }
-
-
-
     }
 
     fun loginDataChanged(username: String, password: String) {

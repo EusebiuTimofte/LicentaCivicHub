@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.civichub.MapsActivity
 
 import com.example.civichub.R
 import com.example.civichub.RegisterActivity
@@ -91,15 +92,35 @@ class LoginActivity : AppCompatActivity() {
                                 username.text.toString(),
                                 password.text.toString(),
                                 context
-                        )
+                        ) {}
                 }
                 false
             }
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString(), this.context)
-//                val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+                loginViewModel.login(username.text.toString(), password.text.toString(), this.context) {
+                    val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+                    if (it != null){
+                        with(sharedPref.edit()){
+                            putString(getString(R.string.logged_user_mail), it.mail)
+                            putString(getString(R.string.logged_user_token), it.token)
+                            putString(getString(R.string.logged_user_username), it.displayName)
+                            apply()
+                        }
+                        val intent = Intent(this.context, MapsActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }else{
+                        with(sharedPref.edit()){
+                            putString(getString(R.string.logged_user_mail), "")
+                            putString(getString(R.string.logged_user_token), "")
+                            putString(getString(R.string.logged_user_username), "")
+                            apply()
+                        }
+                    }
+                }
+
             }
         }
 

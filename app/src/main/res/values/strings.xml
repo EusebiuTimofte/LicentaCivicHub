@@ -15,4 +15,7 @@
     <string name="repeat_password_hint">Repeat password</string>
     <string name="title_activity_maps">Map</string>
     <string name="shared_preferences_file">com.example.civichub.shared.preferences</string>
+    <string name="logged_user_mail">logged_user_mail</string>
+    <string name="logged_user_username">logged_user_username</string>
+    <string name="logged_user_token">logged_user_token</string>
 </resources>

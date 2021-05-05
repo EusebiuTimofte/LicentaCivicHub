@@ -39,7 +39,7 @@ class LoginDataSource {
                 { response ->
                     // Display the first 500 characters of the response string.
                     Log.d("Login", response.toString(2))
-                    val fakeUser = LoggedInUser(username, "Jane Doe")
+                    val fakeUser = LoggedInUser(username, "Jane Doe", mail = response["mail"] as String, token = response["token"] as String)
                     callback(Result.Success(fakeUser))
 
                 },
