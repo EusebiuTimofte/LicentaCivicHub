@@ -1,5 +1,6 @@
 package com.example.civichub
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +13,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.json.JSONArray
+import org.json.JSONObject
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var jsonArray: JSONArray
@@ -56,10 +59,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val latitude = jsonObject.optString("latitude").toDouble()
                     val longitude = jsonObject.optString("longitude").toDouble()
                     val id = jsonObject.optString("id") as String
-                    mMap.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title(id))
-                    if (i == jsonArray.length()-1){
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(latitude, longitude)))
-                    }
+                    var marker = mMap.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title(jsonObject.getString("title")).snippet(jsonObject.getString("description")))
+                    marker.tag = jsonObject
                 }
 
 
@@ -72,7 +73,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add the request to the RequestQueue.
         queue.add(request)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.4268, 26.1025), 10.5f))
 
-
+        mMap.setOnInfoWindowClickListener(this)
     }
+
+    override fun onInfoWindowClick(marker: Marker) {
+
+        val markerTag = marker.tag as JSONObject
+
+        val intent = Intent(this.applicationContext, IssueDetailsActivity::class.java).apply {
+            putExtra("issueId", markerTag.getString("id"))
+        }
+        startActivity(intent)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //save map target and zoom in shared preferences
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //get map target and zoom from preferences and move camera
+    }
+
 }
