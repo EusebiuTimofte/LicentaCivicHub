@@ -45,18 +45,18 @@ class RegisterActivity : AppCompatActivity() {
             // Request a json response from the provided URL.
             val jsonObjectRequest = JsonObjectRequest(
                 Request.Method.POST, url, jsonBody,
-                Response.Listener{ response ->
+                { response ->
                     Toast.makeText(this, "registered", Toast.LENGTH_SHORT).show()
                     Log.d("register", response.toString())
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 },
-                 Response.ErrorListener{ error ->
-                     Log.d("error register", error.toString())
-                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                { error ->
+                    Log.d("error register", error.toString())
+                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
 
-                }
+               }
             )
 
             // Add the request to the RequestQueue.

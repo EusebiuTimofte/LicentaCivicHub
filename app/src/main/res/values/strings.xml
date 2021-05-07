@@ -18,4 +18,7 @@
     <string name="logged_user_mail">logged_user_mail</string>
     <string name="logged_user_username">logged_user_username</string>
     <string name="logged_user_token">logged_user_token</string>
+    <string name="camera_position_latitude">camera_position_latitude</string>
+    <string name="camera_position_longitude">camera_position_longitude</string>
+    <string name="camera_position_zoom">camera_position_zoom</string>
 </resources>

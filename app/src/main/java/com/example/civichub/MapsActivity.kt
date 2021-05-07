@@ -1,5 +1,6 @@
 package com.example.civichub
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWi
 
     private lateinit var mMap: GoogleMap
     private lateinit var jsonArray: JSONArray
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +75,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWi
 
         // Add the request to the RequestQueue.
         queue.add(request)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(44.4268, 26.1025), 10.5f))
 
         mMap.setOnInfoWindowClickListener(this)
+        val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+        //get map target and zoom from preferences and move camera
+        val latitude = sharedPref.getFloat(getString(R.string.camera_position_latitude),
+            (-100.0).toFloat()
+        ).toDouble()
+        val longitude = sharedPref.getFloat(getString(R.string.camera_position_longitude),
+            (-100.0).toFloat()
+        ).toDouble()
+        val zoom = sharedPref.getFloat(getString(R.string.camera_position_zoom), (-100.0).toFloat())
+        if (! (latitude == -100.0 || longitude == -100.0 || zoom == (-100.0).toFloat())){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoom))
+        }
     }
 
     override fun onInfoWindowClick(marker: Marker) {
@@ -90,12 +103,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnInfoWi
 
     override fun onPause() {
         super.onPause()
+
         //save map target and zoom in shared preferences
+        val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+        with(sharedPref.edit()){
+            putFloat(getString(R.string.camera_position_latitude),
+                mMap.cameraPosition.target.latitude.toFloat()
+            )
+            putFloat(getString(R.string.camera_position_longitude),
+                mMap.cameraPosition.target.longitude.toFloat()
+            )
+            putFloat(getString(R.string.camera_position_zoom), mMap.cameraPosition.zoom)
+            apply()
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        //get map target and zoom from preferences and move camera
-    }
 
 }
