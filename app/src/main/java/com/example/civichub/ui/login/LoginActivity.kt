@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.civichub.CustomMapActivity
 import com.example.civichub.MapsActivity
 
 import com.example.civichub.R
@@ -39,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
         if (sharedPref.getString(getString(R.string.logged_user_mail), "") != ""){
-            val intent = Intent(this.applicationContext, MapsActivity::class.java)
+            val intent = Intent(this.applicationContext, CustomMapActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
@@ -115,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
                             putString(getString(R.string.logged_user_username), it.displayName)
                             apply()
                         }
-                        val intent = Intent(this.context, MapsActivity::class.java)
+                        val intent = Intent(this.context, CustomMapActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }else{
