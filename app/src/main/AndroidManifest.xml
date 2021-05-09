@@ -19,7 +19,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".CustomMapActivity"></activity>
+        <activity
+            android:name=".NewIssueFormActivity"
+            android:parentActivityName=".CustomMapActivity" />
+        <activity android:name=".CustomMapActivity" />
         <activity
             android:name=".IssueDetailsActivity"
             android:parentActivityName=".MapsActivity" />
