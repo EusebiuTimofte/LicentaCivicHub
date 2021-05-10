@@ -110,7 +110,7 @@ class CustomMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnI
         fabConfirmMarker.setOnClickListener {
             val intent = Intent(applicationContext, NewIssueFormActivity::class.java).apply {
                 putExtra("Latitude", mMap.cameraPosition.target.latitude)
-                putExtra("Logitude", mMap.cameraPosition.target.longitude)
+                putExtra("Longitude", mMap.cameraPosition.target.longitude)
             }
             startActivity(intent)
         }

@@ -114,6 +114,7 @@ class LoginActivity : AppCompatActivity() {
                             putString(getString(R.string.logged_user_mail), it.mail)
                             putString(getString(R.string.logged_user_token), it.token)
                             putString(getString(R.string.logged_user_username), it.displayName)
+                            putString(getString(R.string.logged_user_id), it.userId)
                             apply()
                         }
                         val intent = Intent(this.context, CustomMapActivity::class.java)
@@ -124,6 +125,7 @@ class LoginActivity : AppCompatActivity() {
                             putString(getString(R.string.logged_user_mail), "")
                             putString(getString(R.string.logged_user_token), "")
                             putString(getString(R.string.logged_user_username), "")
+                            putString(getString(R.string.logged_user_id), "")
                             apply()
                         }
                     }
