@@ -22,4 +22,8 @@
     <string name="camera_position_longitude">camera_position_longitude</string>
     <string name="camera_position_zoom">camera_position_zoom</string>
     <string name="fab_add_new_issue">Add new issue</string>
+    <string name="adress_text_view">Address</string>
+    <string name="issue_description">Issue Description</string>
+    <string name="pick_images_button">Add images</string>
+    <string name="add_issue">Add Issue</string>
 </resources>
