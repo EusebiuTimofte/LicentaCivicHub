@@ -39,6 +39,13 @@ class LoginActivity : AppCompatActivity() {
         val register = findViewById<Button>(R.id.registerButton)
 
         val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+
+
+//        with(sharedPref.edit()){
+//            putString(getString(R.string.logged_user_mail), "")
+//            apply()
+//        }
+
         if (sharedPref.getString(getString(R.string.logged_user_mail), "") != ""){
             val intent = Intent(this.applicationContext, CustomMapActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -115,6 +122,7 @@ class LoginActivity : AppCompatActivity() {
                             putString(getString(R.string.logged_user_token), it.token)
                             putString(getString(R.string.logged_user_username), it.displayName)
                             putString(getString(R.string.logged_user_id), it.userId)
+                            putInt(getString(R.string.logged_user_type), it.type)
                             apply()
                         }
                         val intent = Intent(this.context, CustomMapActivity::class.java)
@@ -126,6 +134,7 @@ class LoginActivity : AppCompatActivity() {
                             putString(getString(R.string.logged_user_token), "")
                             putString(getString(R.string.logged_user_username), "")
                             putString(getString(R.string.logged_user_id), "")
+                            putInt(getString(R.string.logged_user_type), -1)
                             apply()
                         }
                     }

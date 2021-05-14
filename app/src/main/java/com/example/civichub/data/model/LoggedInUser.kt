@@ -7,5 +7,6 @@ data class LoggedInUser(
         val userId: String,
         val displayName: String,
         val token: String,
-        val mail: String
+        val mail: String,
+        val type: Int
 )
