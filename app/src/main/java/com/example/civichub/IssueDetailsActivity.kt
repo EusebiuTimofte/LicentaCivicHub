@@ -44,7 +44,10 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var solutionMessage: TextView
     private lateinit var solutionImage: ImageView
     private lateinit var revokedSolutionJustification: TextView
+    private lateinit var addImplementationDetailsButton: Button
+    private lateinit var revokedImplementationJustification: TextView
     val SUBMIT_SOLUTION = 1
+    val SUBMIT_IMPLEMENTATION = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,6 +164,33 @@ class IssueDetailsActivity : AppCompatActivity() {
                 //add approve solution button
 
                 addApproveRevokeSolutionButtons()
+
+                //add implementation details button
+                if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 3 &&
+                    sharedPref.getInt(getString(R.string.logged_user_type), -1) == 2) {
+                    addImplementationDetailsButton = Button(this)
+                    addImplementationDetailsButton.text = getString(R.string.submit_implementation)
+                    addImplementationDetailsButton.id = View.generateViewId()
+                    constraintLayout.addView(addImplementationDetailsButton)
+                    val addImplementationDetailsButtonLayoutParams = addImplementationDetailsButton.layoutParams as ConstraintLayout.LayoutParams
+                    if (this::revokedImplementationJustification.isInitialized){
+                        addImplementationDetailsButtonLayoutParams.topToBottom = revokedSolutionJustification.id
+                    }else{
+                        addImplementationDetailsButtonLayoutParams.topToBottom = solutionImage.id
+                    }
+
+                    addImplementationDetailsButtonLayoutParams.startToStart = constraintLayout.id
+                    addImplementationDetailsButtonLayoutParams.leftMargin = 48
+                    addImplementationDetailsButtonLayoutParams.topMargin = 20
+                    addImplementationDetailsButton.requestLayout()
+                    addImplementationDetailsButton.setOnClickListener {
+                        val intentSubmit = Intent(this, SubmitImplementationFormActivity::class.java).apply {
+                            putExtra("issueId", issueId)
+                        }
+                        startActivityForResult(intentSubmit, SUBMIT_IMPLEMENTATION)
+                    }
+
+                }
 
 
             },
@@ -322,6 +352,10 @@ class IssueDetailsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == SUBMIT_SOLUTION) {
+            recreate()
+        }
+
+        if (requestCode == SUBMIT_IMPLEMENTATION) {
             recreate()
         }
     }

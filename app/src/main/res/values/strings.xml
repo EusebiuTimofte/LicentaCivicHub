@@ -39,4 +39,6 @@
     <string name="submit">SUBMIT</string>
     <string name="approve_solution">Approve solution</string>
     <string name="revoke_solution">Revoke solution</string>
+    <string name="submit_implementation">SUBMIT IMPLEMENTATION</string>
+    <string name="solution_implementation_details">Solution implementation details</string>
 </resources>
