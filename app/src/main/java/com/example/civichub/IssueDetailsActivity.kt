@@ -1,7 +1,9 @@
 package com.example.civichub
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -11,7 +13,9 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -22,6 +26,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.civichub.data.model.LoggedInUser
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
@@ -36,6 +41,9 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var issueId : String
     private lateinit var jsonObjectResponse: JSONObject
     private lateinit var queue : RequestQueue
+    private lateinit var solutionMessage: TextView
+    private lateinit var solutionImage: ImageView
+    private lateinit var revokedSolutionJustification: TextView
     val SUBMIT_SOLUTION = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,16 +79,39 @@ class IssueDetailsActivity : AppCompatActivity() {
                 }
                 statusMessage.text = jsonObjectResponse.getJSONObject("lastIssueState").getString("message")
 
+                //add justification in case needed
+                if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 1 &&
+                    !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
+                        val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
+                    revokedSolutionJustification = TextView(this)
+                    revokedSolutionJustification.text = justificationString
+                    revokedSolutionJustification.id = View.generateViewId()
+                    constraintLayout.addView(revokedSolutionJustification)
+                    val revokedSolutionJustificationLayoutParams = revokedSolutionJustification.layoutParams as ConstraintLayout.LayoutParams
+                    revokedSolutionJustificationLayoutParams.topToBottom = statusMessage.id
+                    revokedSolutionJustificationLayoutParams.startToStart = constraintLayout.id
+                    revokedSolutionJustificationLayoutParams.leftMargin = 48
+                    revokedSolutionJustificationLayoutParams.topMargin = 20
+                    revokedSolutionJustification.requestLayout()
+
+                }
+
                 addApproveRevokeButtons()
 
+                //add solution button
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 1 &&
                     sharedPref.getInt(getString(R.string.logged_user_type), -1) == 2) {
                     val addSolutionButton = Button(this)
-                    addSolutionButton.text = getString(R.string.approve_issue)
+                    addSolutionButton.text = getString(R.string.submit_solution)
                     addSolutionButton.id = View.generateViewId()
                     constraintLayout.addView(addSolutionButton)
                     val addSolutionButtonLayoutParams = addSolutionButton.layoutParams as ConstraintLayout.LayoutParams
-                    addSolutionButtonLayoutParams.topToBottom = statusMessage.id
+                    if (this::revokedSolutionJustification.isInitialized){
+                        addSolutionButtonLayoutParams.topToBottom = revokedSolutionJustification.id
+                    }else{
+                        addSolutionButtonLayoutParams.topToBottom = statusMessage.id
+                    }
+
                     addSolutionButtonLayoutParams.startToStart = constraintLayout.id
                     addSolutionButtonLayoutParams.leftMargin = 48
                     addSolutionButtonLayoutParams.topMargin = 20
@@ -94,8 +125,9 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 }
 
+                //show solution message and photos
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 2..5){
-                    val solutionMessage = TextView(this)
+                    solutionMessage = TextView(this)
                     solutionMessage.text = jsonObjectResponse.getString("solutionMessage")
                     solutionMessage.id = View.generateViewId()
                     constraintLayout.addView(solutionMessage)
@@ -106,7 +138,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                     solutionMessageLayoutParams.topMargin = 20
                     solutionMessage.requestLayout()
 
-                    val solutionImage = ImageView(this)
+                    solutionImage = ImageView(this)
                     solutionImage.id = View.generateViewId()
                     val solutionPhotosArray = jsonObjectResponse.getJSONArray("solutionPhotos")
                     if (solutionPhotosArray.length() >= 1){
@@ -121,7 +153,15 @@ class IssueDetailsActivity : AppCompatActivity() {
                     solutionImageLayoutParams.leftMargin = 48
                     solutionImageLayoutParams.topMargin = 20
                     solutionImage.requestLayout()
+
+
+
                 }
+
+                //add approve solution button
+
+                addApproveRevokeSolutionButtons()
+
 
             },
             { error ->
@@ -191,6 +231,93 @@ class IssueDetailsActivity : AppCompatActivity() {
         }
     }
 
+
+    fun addApproveRevokeSolutionButtons(){
+        //add buttons
+
+        if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 2 &&
+            sharedPref.getInt(getString(R.string.logged_user_type), -1) == 3){
+
+            val approveButton = Button(this)
+            approveButton.text = getString(R.string.approve_solution)
+            approveButton.id = View.generateViewId()
+            constraintLayout.addView(approveButton)
+            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
+            approveButtonLayoutParams.topToBottom = solutionImage.id
+            approveButtonLayoutParams.startToStart = constraintLayout.id
+            approveButtonLayoutParams.leftMargin = 48
+            approveButtonLayoutParams.topMargin = 20
+            approveButton.requestLayout()
+
+            val revokeButton = Button(this)
+            revokeButton.text = getString(R.string.revoke_solution)
+            constraintLayout.addView(revokeButton)
+            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
+            revokeButtonLayoutParams.topToBottom = approveButton.id
+            revokeButtonLayoutParams.startToStart = constraintLayout.id
+            revokeButtonLayoutParams.leftMargin = 48
+            revokeButtonLayoutParams.topMargin = 20
+            revokeButton.requestLayout()
+
+            approveButton.setOnClickListener {
+                val urlApprove = "http://10.0.2.2:5000/api/issueState/approveSolution/$issueId"
+                val requestApprove = JsonObjectRequest(
+                    Request.Method.POST, urlApprove, null,
+                    {
+                        recreate()
+                    },
+                    {
+                        Toast.makeText(this, "Error approve", Toast.LENGTH_LONG).show()
+                    })
+                queue.add(requestApprove)
+            }
+
+            revokeButton.setOnClickListener {
+                showdialog {
+                    result ->
+                    if (result != null){
+                        val urlRevoke = "http://10.0.2.2:5000/api/issueState/wrongSolution/$issueId/$result"
+                        val requestRevoke = JsonObjectRequest(
+                            Request.Method.POST, urlRevoke, null,
+                            {
+                                recreate()
+                            },
+                            {
+                                Toast.makeText(this, "Error revoke solution", Toast.LENGTH_LONG).show()
+                            })
+                        queue.add(requestRevoke)
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    fun showdialog(callback: (result: String?) -> Unit){
+        val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Title")
+
+// Set up the input
+        val input = EditText(this)
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setHint("Enter Text")
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+// Set up the buttons
+        builder.setPositiveButton("OK") { dialog, which ->
+            // Here you get get input text from the Edittext
+            callback(input.text.toString())
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.cancel()
+            callback(null)
+        }
+
+        builder.show()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -198,4 +325,6 @@ class IssueDetailsActivity : AppCompatActivity() {
             recreate()
         }
     }
+
+
 }
