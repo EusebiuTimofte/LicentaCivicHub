@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 import java.util.*
 
 
@@ -55,9 +56,13 @@ class NewIssueFormActivity : AppCompatActivity() {
 
         addressValue = findViewById(R.id.addressTextViewValue)
         val geocoder: Geocoder = Geocoder(this, Locale.getDefault())
-        val addresses = geocoder.getFromLocation(intent.getDoubleExtra("Latitude", -100.0), intent.getDoubleExtra("Longitude", -100.0), 1)
-        addressValue.text = addresses.get(0).getAddressLine(0)
+        try{
+            val addresses = geocoder.getFromLocation(intent.getDoubleExtra("Latitude", -100.0), intent.getDoubleExtra("Longitude", -100.0), 1)
+            addressValue.text = addresses.get(0).getAddressLine(0)
 
+        }catch (e: Exception){
+            addressValue.text = getString(R.string.error_fetching_address)
+        }
         imagePicked = findViewById(R.id.imageView)
         base64Codes = mutableListOf()
         addIssueButton = findViewById(R.id.addIssueButton)

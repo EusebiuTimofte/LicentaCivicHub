@@ -33,4 +33,7 @@
     <string name="revoke_issue">Revoke issue</string>
     <string name="approve_button_id" />
     <string name="revoke_button_id" />
+    <string name="error_fetching_address">Error fetching address.</string>
+    <string name="solution_description">Solution description</string>
+    <string name="submit">SUBMIT</string>
 </resources>
