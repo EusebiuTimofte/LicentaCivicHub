@@ -94,6 +94,35 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 }
 
+                if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 2..5){
+                    val solutionMessage = TextView(this)
+                    solutionMessage.text = jsonObjectResponse.getString("solutionMessage")
+                    solutionMessage.id = View.generateViewId()
+                    constraintLayout.addView(solutionMessage)
+                    val solutionMessageLayoutParams = solutionMessage.layoutParams as ConstraintLayout.LayoutParams
+                    solutionMessageLayoutParams.topToBottom = statusMessage.id
+                    solutionMessageLayoutParams.startToStart = constraintLayout.id
+                    solutionMessageLayoutParams.leftMargin = 48
+                    solutionMessageLayoutParams.topMargin = 20
+                    solutionMessage.requestLayout()
+
+                    val solutionImage = ImageView(this)
+                    solutionImage.id = View.generateViewId()
+                    val solutionPhotosArray = jsonObjectResponse.getJSONArray("solutionPhotos")
+                    if (solutionPhotosArray.length() >= 1){
+                        val imageBytes = Base64.decode(solutionPhotosArray[0] as String, 0)
+                        val imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                        solutionImage.setImageBitmap(imageBitmap)
+                    }
+                    constraintLayout.addView(solutionImage)
+                    val solutionImageLayoutParams = solutionImage.layoutParams as ConstraintLayout.LayoutParams
+                    solutionImageLayoutParams.topToBottom = solutionMessage.id
+                    solutionImageLayoutParams.startToStart = constraintLayout.id
+                    solutionImageLayoutParams.leftMargin = 48
+                    solutionImageLayoutParams.topMargin = 20
+                    solutionImage.requestLayout()
+                }
+
             },
             { error ->
                 Log.d("Issues", error.toString())
