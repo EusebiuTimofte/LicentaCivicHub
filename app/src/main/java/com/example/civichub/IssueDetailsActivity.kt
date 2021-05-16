@@ -46,6 +46,8 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var revokedSolutionJustification: TextView
     private lateinit var addImplementationDetailsButton: Button
     private lateinit var revokedImplementationJustification: TextView
+    private lateinit var implementationMessage: TextView
+    private lateinit var implementationImage: ImageView
     val SUBMIT_SOLUTION = 1
     val SUBMIT_IMPLEMENTATION = 2
 
@@ -163,7 +165,27 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 //add approve solution button
 
+
+
                 addApproveRevokeSolutionButtons()
+
+
+                //add revoked implementation justification in case needed
+                if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 3 &&
+                    !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
+                    val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
+                    revokedImplementationJustification = TextView(this)
+                    revokedImplementationJustification.text = justificationString
+                    revokedImplementationJustification.id = View.generateViewId()
+                    constraintLayout.addView(revokedImplementationJustification)
+                    val revokedImplementationJustificationLayoutParams = revokedImplementationJustification.layoutParams as ConstraintLayout.LayoutParams
+                    revokedImplementationJustificationLayoutParams.topToBottom = solutionImage.id
+                    revokedImplementationJustificationLayoutParams.startToStart = constraintLayout.id
+                    revokedImplementationJustificationLayoutParams.leftMargin = 48
+                    revokedImplementationJustificationLayoutParams.topMargin = 20
+                    revokedImplementationJustification.requestLayout()
+
+                }
 
                 //add implementation details button
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 3 &&
@@ -192,7 +214,41 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 }
 
+                //show implementation message and photos
+                if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 4..5){
+                    implementationMessage = TextView(this)
+                    implementationMessage.text = jsonObjectResponse.getString("implementationMessage")
+                    implementationMessage.id = View.generateViewId()
+                    constraintLayout.addView(implementationMessage)
+                    val implementationMessageLayoutParams = implementationMessage.layoutParams as ConstraintLayout.LayoutParams
+                    implementationMessageLayoutParams.topToBottom = solutionImage.id
+                    implementationMessageLayoutParams.startToStart = constraintLayout.id
+                    implementationMessageLayoutParams.leftMargin = 48
+                    implementationMessageLayoutParams.topMargin = 20
+                    implementationMessage.requestLayout()
 
+                    implementationImage = ImageView(this)
+                    implementationImage.id = View.generateViewId()
+                    val solutionPhotosArray = jsonObjectResponse.getJSONArray("implementationPhotos")
+                    if (solutionPhotosArray.length() >= 1){
+                        val imageBytes = Base64.decode(solutionPhotosArray[0] as String, 0)
+                        val imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                        implementationImage.setImageBitmap(imageBitmap)
+                    }
+                    constraintLayout.addView(implementationImage)
+                    val implementationImageLayoutParams = implementationImage.layoutParams as ConstraintLayout.LayoutParams
+                    implementationImageLayoutParams.topToBottom = implementationMessage.id
+                    implementationImageLayoutParams.startToStart = constraintLayout.id
+                    implementationImageLayoutParams.leftMargin = 48
+                    implementationImageLayoutParams.topMargin = 20
+                    implementationImage.requestLayout()
+
+
+
+                }
+
+                //show add revoke implementation buttons
+                addApproveRevokeImplementationButtons()
             },
             { error ->
                 Log.d("Issues", error.toString())
@@ -347,6 +403,92 @@ class IssueDetailsActivity : AppCompatActivity() {
 
         builder.show()
     }
+
+    fun addApproveRevokeImplementationButtons(){
+        //add buttons
+
+        if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 4 &&
+            sharedPref.getInt(getString(R.string.logged_user_type), -1) == 3){
+
+            val approveButton = Button(this)
+            approveButton.text = getString(R.string.approve_implementation)
+            approveButton.id = View.generateViewId()
+            constraintLayout.addView(approveButton)
+            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
+            approveButtonLayoutParams.topToBottom = implementationImage.id
+            approveButtonLayoutParams.startToStart = constraintLayout.id
+            approveButtonLayoutParams.leftMargin = 48
+            approveButtonLayoutParams.topMargin = 20
+            approveButton.requestLayout()
+
+            val revokeButton = Button(this)
+            revokeButton.text = getString(R.string.revoke_implementation)
+            constraintLayout.addView(revokeButton)
+            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
+            revokeButtonLayoutParams.topToBottom = approveButton.id
+            revokeButtonLayoutParams.startToStart = constraintLayout.id
+            revokeButtonLayoutParams.leftMargin = 48
+            revokeButtonLayoutParams.topMargin = 20
+            revokeButton.requestLayout()
+
+            approveButton.setOnClickListener {
+                val urlApprove = "http://10.0.2.2:5000/api/issueState/approveImplementation/$issueId"
+                val requestApprove = JsonObjectRequest(
+                    Request.Method.POST, urlApprove, null,
+                    {
+                        recreate()
+                    },
+                    {
+                        Toast.makeText(this, "Error approve", Toast.LENGTH_LONG).show()
+                    })
+                queue.add(requestApprove)
+            }
+
+            revokeButton.setOnClickListener {
+                showdialog {
+                        result ->
+                    if (result != null){
+                        val urlRevoke = "http://10.0.2.2:5000/api/issueState/wrongImplementation/$issueId/$result"
+                        val requestRevoke = JsonObjectRequest(
+                            Request.Method.POST, urlRevoke, null,
+                            {
+                                recreate()
+                            },
+                            {
+                                Toast.makeText(this, "Error revoke implementation", Toast.LENGTH_LONG).show()
+                            })
+                        queue.add(requestRevoke)
+                    }
+                }
+
+
+            }
+        }
+    }
+
+//    fun showdialog(callback: (result: String?) -> Unit){
+//        val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(this)
+//        builder.setTitle("Title")
+//
+//// Set up the input
+//        val input = EditText(this)
+//// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+//        input.setHint("Enter Text")
+//        input.inputType = InputType.TYPE_CLASS_TEXT
+//        builder.setView(input)
+//
+//// Set up the buttons
+//        builder.setPositiveButton("OK") { dialog, which ->
+//            // Here you get get input text from the Edittext
+//            callback(input.text.toString())
+//        }
+//        builder.setNegativeButton("Cancel") { dialog, which ->
+//            dialog.cancel()
+//            callback(null)
+//        }
+//
+//        builder.show()
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

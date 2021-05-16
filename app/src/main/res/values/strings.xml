@@ -41,4 +41,6 @@
     <string name="revoke_solution">Revoke solution</string>
     <string name="submit_implementation">SUBMIT IMPLEMENTATION</string>
     <string name="solution_implementation_details">Solution implementation details</string>
+    <string name="approve_implementation">Approve implementation</string>
+    <string name="revoke_implementation">Revoke implementation</string>
 </resources>
