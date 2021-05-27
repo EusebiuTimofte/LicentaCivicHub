@@ -41,10 +41,10 @@ class LoginActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
 
 
-        with(sharedPref.edit()){
-            putString(getString(R.string.logged_user_mail), "")
-            apply()
-        }
+//        with(sharedPref.edit()){
+//            putString(getString(R.string.logged_user_mail), "")
+//            apply()
+//        }
 
         if (sharedPref.getString(getString(R.string.logged_user_mail), "") != ""){
             val intent = Intent(this.applicationContext, CustomMapActivity::class.java)

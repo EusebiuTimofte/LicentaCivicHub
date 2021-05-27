@@ -43,4 +43,5 @@
     <string name="solution_implementation_details">Solution implementation details</string>
     <string name="approve_implementation">Approve implementation</string>
     <string name="revoke_implementation">Revoke implementation</string>
+    <string name="follow_button">Follow</string>
 </resources>

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -25,6 +26,7 @@ import androidx.core.view.marginTop
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.civichub.data.model.LoggedInUser
 import org.json.JSONObject
@@ -48,6 +50,8 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var revokedImplementationJustification: TextView
     private lateinit var implementationMessage: TextView
     private lateinit var implementationImage: ImageView
+    private lateinit var followButton: Button
+    private var followJsonObject: JSONObject? = null
     val SUBMIT_SOLUTION = 1
     val SUBMIT_IMPLEMENTATION = 2
 
@@ -61,6 +65,7 @@ class IssueDetailsActivity : AppCompatActivity() {
         description = findViewById(R.id.description)
         image = findViewById(R.id.descriptionImage)
         statusMessage = findViewById(R.id.statusMessage)
+        followButton = findViewById(R.id.followButton)
 
 
         issueId = intent.getStringExtra("issueId")!!
@@ -249,6 +254,60 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 //show add revoke implementation buttons
                 addApproveRevokeImplementationButtons()
+
+
+                //set follow button on click listeners
+                val userId = sharedPref.getString(getString(R.string.logged_user_id), "")
+                val followUrl = "http://10.0.2.2:5000/api/Follow/getAllByIssueAndUser/$issueId/$userId"
+                val followRequest = StringRequest(Request.Method.GET, followUrl,
+                    {
+                        // Display the first 500 characters of the response string.
+                        followButton.setBackgroundColor(Color.GREEN)
+                        followJsonObject = JSONObject(it)
+                    },
+                    { error ->
+
+//                        if (error.message!! == "Follow not found"){
+                            followButton.setBackgroundColor(Color.RED)
+                            followJsonObject = null
+//                        }else{
+//                            Toast.makeText(this.applicationContext, "Error checking following", Toast.LENGTH_LONG).show()
+//                            followJsonObject = null
+//                        }
+                    })
+                queue.add(followRequest)
+
+                val addFollowRequestUrl = "http://10.0.2.2:5000/api/Follow"
+                var addFollowRequestBody = JSONObject()
+                addFollowRequestBody.put("userId", userId)
+                addFollowRequestBody.put("issueId", issueId)
+                val addFollowRequest = JsonObjectRequest(Request.Method.POST, addFollowRequestUrl, addFollowRequestBody,
+                    {
+                        queue.add(followRequest)
+                    },
+                    {
+                        Toast.makeText(this.applicationContext, "Add follow error", Toast.LENGTH_LONG).show()
+                        Log.d("Add follow", it.message!!)
+                    })
+
+                val deleteFollowRequestUrl = "http://10.0.2.2:5000/api/Follow/byUserAndIssue/$userId/$issueId"
+                val deleteFollowRequest = StringRequest(Request.Method.DELETE, deleteFollowRequestUrl,
+                    {
+                        queue.add(followRequest)
+                    },
+                    {
+                        Toast.makeText(this.applicationContext, "Error unfollowing", Toast.LENGTH_LONG).show()
+                    })
+
+                followButton.setOnClickListener {
+
+                    if (followJsonObject == null){
+                        queue.add(addFollowRequest)
+                    }else{
+                        queue.add(deleteFollowRequest)
+                    }
+                }
+
             },
             { error ->
                 Log.d("Issues", error.toString())
@@ -258,6 +317,8 @@ class IssueDetailsActivity : AppCompatActivity() {
 
         // Add the request to the RequestQueue.
         queue.add(request)
+
+
 
 
     }
