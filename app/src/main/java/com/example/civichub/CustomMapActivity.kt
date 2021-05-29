@@ -6,6 +6,8 @@ import android.graphics.drawable.ScaleDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.android.volley.Request
@@ -63,7 +65,6 @@ class CustomMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnI
             { response ->
                 // Display the first 500 characters of the response string.
                 jsonArray = JSONArray(response)
-                Log.d("json array", jsonArray.toString(2))
                 for (i in 0 until jsonArray.length()) {
                     val jsonObject = jsonArray.getJSONObject(i)
                     val latitude = jsonObject.optString("latitude").toDouble()
@@ -141,6 +142,23 @@ class CustomMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnI
             )
             putFloat(getString(R.string.camera_position_zoom), mMap.cameraPosition.zoom)
             apply()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.action_bar,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.userProfileMenuOption -> {
+                val intentUserProfile = Intent(this.applicationContext, UserProfileActivity::class.java)
+                startActivity(intentUserProfile)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
