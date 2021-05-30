@@ -158,6 +158,11 @@ class CustomMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnI
                 startActivity(intentUserProfile)
                 true
             }
+            R.id.followingMenuOption -> {
+                val intentFollowing = Intent(this.applicationContext, FollowingActivity::class.java)
+                startActivity(intentFollowing)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -27,6 +27,8 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
         val userMail = sharedPref.getString(getString(R.string.logged_user_mail), "")
 
@@ -76,5 +78,10 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }
