@@ -29,13 +29,13 @@ class PageViewModel : ViewModel() {
 
     fun setIndex(index: Int, context: Context) {
         _index.value = index
-        var requestUrl = ""
-        when (index) {
-            1 -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
-            2 -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
-            3 -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
-            else -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
-        }
+        var requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop/$index"
+//        when (index) {
+//            1 -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
+//            2 -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
+//            3 -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
+//            else -> requestUrl = "http://10.0.2.2:5000/api/gamification/GetUsersTop"
+//        }
         val queue = Volley.newRequestQueue(context)
         val topRequest = StringRequest(
             Request.Method.GET, requestUrl,
