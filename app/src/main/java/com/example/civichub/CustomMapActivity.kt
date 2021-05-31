@@ -163,6 +163,11 @@ class CustomMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnI
                 startActivity(intentFollowing)
                 true
             }
+            R.id.topMenuOption -> {
+                val intentTop = Intent(this.applicationContext, TopsActivity::class.java)
+                startActivity(intentTop)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

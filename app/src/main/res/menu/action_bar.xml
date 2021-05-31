@@ -8,4 +8,7 @@
     <item
         android:title="@string/following_option"
         android:id="@+id/followingMenuOption" />
+    <item
+        android:title="@string/top"
+        android:id="@+id/topMenuOption" />
 </menu>

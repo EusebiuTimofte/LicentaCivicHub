@@ -19,7 +19,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".FollowingActivity"></activity>
+        <activity
+            android:name=".TopsActivity"
+            android:label="@string/title_activity_tops"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FollowingActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".SubmitImplementationFormActivity" />
         <activity android:name=".SubmitSolutionActivity" />

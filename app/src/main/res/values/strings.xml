@@ -48,4 +48,10 @@
     <string name="rank">"Rank: %s"</string>
     <string name="progress">"%d/%d"</string>
     <string name="following_option">Following</string>
+    <string name="title_activity_tops">TopsActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="position">"%d."</string>
+    <string name="top">Top</string>
 </resources>
