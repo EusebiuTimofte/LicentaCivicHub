@@ -26,7 +26,7 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var pointsLabel: TextView
     private lateinit var progressBarEl: ProgressBar
     private lateinit var badgeImage: ImageView
-    private lateinit var logoutButton: Button
+//    private lateinit var logoutButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
@@ -42,7 +42,7 @@ class UserProfileActivity : AppCompatActivity() {
         pointsLabel = findViewById(R.id.pointsTextView)
         progressBarEl = findViewById(R.id.progressBar)
         badgeImage = findViewById(R.id.badgeImageView)
-        logoutButton = findViewById(R.id.logoutButton)
+//        logoutButton = findViewById(R.id.logoutButton)
 
         mailLabel.text = userMail
 
@@ -68,15 +68,15 @@ class UserProfileActivity : AppCompatActivity() {
             })
         queue.add(getBadgeRequest)
 
-        logoutButton.setOnClickListener {
-            with(sharedPref.edit()) {
-                putString(getString(R.string.logged_user_mail), "")
-                apply()
-            }
-            val loginIntent = Intent(this.applicationContext, LoginActivity::class.java)
-            loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(loginIntent)
-        }
+//        logoutButton.setOnClickListener {
+//            with(sharedPref.edit()) {
+//                putString(getString(R.string.logged_user_mail), "")
+//                apply()
+//            }
+//            val loginIntent = Intent(this.applicationContext, LoginActivity::class.java)
+//            loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//            startActivity(loginIntent)
+//        }
     }
 
     fun setBadge(badgeNr: Int) {

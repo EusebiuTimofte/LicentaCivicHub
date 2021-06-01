@@ -11,4 +11,7 @@
     <item
         android:title="@string/top"
         android:id="@+id/topMenuOption" />
+    <item
+        android:title="@string/logout"
+        android:id="@+id/logoutMenuOption" />
 </menu>

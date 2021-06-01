@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.civichub.ui.login.LoginActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -166,6 +167,18 @@ class CustomMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnI
             R.id.topMenuOption -> {
                 val intentTop = Intent(this.applicationContext, TopsActivity::class.java)
                 startActivity(intentTop)
+                true
+            }
+            R.id.logoutMenuOption -> {
+                val sharedPref =
+                    getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putString(getString(com.example.civichub.R.string.logged_user_mail), "")
+                    apply()
+                }
+                val loginIntent = Intent(this.applicationContext, LoginActivity::class.java)
+                loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(loginIntent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
