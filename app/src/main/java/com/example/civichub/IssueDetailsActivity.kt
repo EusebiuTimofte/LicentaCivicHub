@@ -23,6 +23,7 @@ import android.view.View
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginTop
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
@@ -52,6 +53,7 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var implementationImage: ImageView
     private lateinit var followButton: Button
     private var followJsonObject: JSONObject? = null
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     val SUBMIT_SOLUTION = 1
     val SUBMIT_IMPLEMENTATION = 2
 
@@ -66,6 +68,12 @@ class IssueDetailsActivity : AppCompatActivity() {
         image = findViewById(R.id.descriptionImage)
         statusMessage = findViewById(R.id.statusMessage)
         followButton = findViewById(R.id.followButton)
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutIssueDetails)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            recreate()
+            swipeRefreshLayout.isRefreshing = false
+        }
 
 
         issueId = intent.getStringExtra("issueId")!!
