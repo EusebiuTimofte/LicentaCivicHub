@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFEB3B">
+    android:layout_marginBottom="5dp"
+    android:background="#9F9F98"
+    app:layout_constraintCircleRadius="2dp"
+    android:id="@+id/layoutFollowingCell">
 
     <TextView
         android:id="@+id/followingTitleText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="5dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.162"
@@ -19,18 +22,18 @@
 
     <TextView
         android:id="@+id/followingDescriptionText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="5dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/followingTitleText"
         app:layout_constraintTop_toBottomOf="@+id/followingTitleText" />
 
     <TextView
         android:id="@+id/followingAddressText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="5dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/followingDescriptionText"
         app:layout_constraintTop_toBottomOf="@+id/followingDescriptionText" />

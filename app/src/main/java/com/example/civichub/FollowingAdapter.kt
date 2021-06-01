@@ -1,6 +1,7 @@
 package com.example.civichub
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.location.Geocoder
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
 import java.lang.Exception
@@ -24,12 +26,14 @@ public class FollowingAdapter (private val dataSet: Array<JSONObject>, private v
         val followingTitleText: TextView
         val followingDescriptionText: TextView
         val followingAddressText: TextView
+        val layout: ConstraintLayout
 
         init {
             // Define click listener for the ViewHolder's View.
             followingTitleText = view.findViewById(R.id.followingTitleText)
             followingDescriptionText = view.findViewById(R.id.followingDescriptionText)
             followingAddressText = view.findViewById(R.id.followingAddressText)
+            layout = view.findViewById(R.id.layoutFollowingCell)
         }
     }
 
@@ -60,6 +64,15 @@ public class FollowingAdapter (private val dataSet: Array<JSONObject>, private v
         }catch (e: Exception){
             holder.followingAddressText.text = Resources.getSystem().getString(R.string.error_fetching_address)
         }
+
+        Log.d("issueId", dataSet[position].getJSONObject("issue").getString("id"))
+        holder.layout.setOnClickListener {
+            val intent = Intent(holder.layout.context, IssueDetailsActivity::class.java).apply {
+                putExtra("issueId", dataSet[position].getJSONObject("issue").getString("id"))
+            }
+            holder.layout.context.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount(): Int {

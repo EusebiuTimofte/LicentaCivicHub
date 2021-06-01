@@ -1,37 +1,30 @@
 package com.example.civichub
 
-import android.app.Activity
+import android.R.attr.button
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.provider.MediaStore
 import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.civichub.data.model.LoggedInUser
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
+import kotlin.properties.Delegates
+
 
 class IssueDetailsActivity : AppCompatActivity() {
 
@@ -56,10 +49,15 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     val SUBMIT_SOLUTION = 1
     val SUBMIT_IMPLEMENTATION = 2
+    private var scale by Delegates.notNull<Float>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_issue_details)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        scale = applicationContext.resources.displayMetrics.density
 
         sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
         constraintLayout = findViewById(R.id.constraintLayout)
@@ -112,6 +110,20 @@ class IssueDetailsActivity : AppCompatActivity() {
                     revokedSolutionJustificationLayoutParams.topMargin = 20
                     revokedSolutionJustification.requestLayout()
 
+                    val constraintSet = ConstraintSet()
+                    constraintSet.clone(constraintLayout)
+
+                    constraintSet.connect(
+                        revokedSolutionJustification.id,
+                        ConstraintSet.LEFT,
+                        statusMessage.id,
+                        ConstraintSet.LEFT,
+                        0
+                    )
+                    constraintSet.applyTo(constraintLayout)
+
+
+
                 }
 
                 addApproveRevokeButtons()
@@ -151,10 +163,33 @@ class IssueDetailsActivity : AppCompatActivity() {
                     constraintLayout.addView(solutionMessage)
                     val solutionMessageLayoutParams = solutionMessage.layoutParams as ConstraintLayout.LayoutParams
                     solutionMessageLayoutParams.topToBottom = statusMessage.id
-                    solutionMessageLayoutParams.startToStart = constraintLayout.id
-                    solutionMessageLayoutParams.leftMargin = 48
-                    solutionMessageLayoutParams.topMargin = 20
+//                    solutionMessageLayoutParams.startToStart = statusMessage.id
+//                    solutionMessageLayoutParams.marginStart = (20 * scale).toInt()
+//                    solutionMessageLayoutParams.leftMargin = (20 * scale).toInt()
+//                    solutionMessageLayoutParams.setMargins(20,20,10,0)
+                    solutionMessageLayoutParams.topMargin = 50
+//                    val solutionMessageMarginParams = solutionMessage.layoutParams as ViewGroup.MarginLayoutParams
+//                    solutionMessageMarginParams.setMargins(20,20,10,0)
                     solutionMessage.requestLayout()
+
+                    val constraintSet = ConstraintSet()
+                    constraintSet.clone(constraintLayout)
+
+                    constraintSet.connect(
+                        solutionMessage.id,
+                        ConstraintSet.LEFT,
+                        statusMessage.id,
+                        ConstraintSet.LEFT,
+                        (20 * scale).toInt()
+                    )
+                    constraintSet.connect(
+                        solutionMessage.id,
+                        ConstraintSet.END,
+                        constraintLayout.id,
+                        ConstraintSet.END,
+                        0
+                    )
+                    constraintSet.applyTo(constraintLayout)
 
                     solutionImage = ImageView(this)
                     solutionImage.id = View.generateViewId()
@@ -167,10 +202,22 @@ class IssueDetailsActivity : AppCompatActivity() {
                     constraintLayout.addView(solutionImage)
                     val solutionImageLayoutParams = solutionImage.layoutParams as ConstraintLayout.LayoutParams
                     solutionImageLayoutParams.topToBottom = solutionMessage.id
-                    solutionImageLayoutParams.startToStart = constraintLayout.id
-                    solutionImageLayoutParams.leftMargin = 48
+//                    solutionImageLayoutParams.startToStart = constraintLayout.id
+//                    solutionImageLayoutParams.leftMargin = 48
                     solutionImageLayoutParams.topMargin = 20
                     solutionImage.requestLayout()
+
+
+                    val constraintSetImage = ConstraintSet()
+                    constraintSetImage.clone(constraintLayout)
+                    constraintSetImage.connect(
+                        solutionImage.id,
+                        ConstraintSet.LEFT,
+                        solutionMessage.id,
+                        ConstraintSet.LEFT,
+                        0
+                    )
+                    constraintSetImage.applyTo(constraintLayout)
 
 
 
@@ -195,10 +242,22 @@ class IssueDetailsActivity : AppCompatActivity() {
                     constraintLayout.addView(revokedImplementationJustification)
                     val revokedImplementationJustificationLayoutParams = revokedImplementationJustification.layoutParams as ConstraintLayout.LayoutParams
                     revokedImplementationJustificationLayoutParams.topToBottom = solutionImage.id
-                    revokedImplementationJustificationLayoutParams.startToStart = constraintLayout.id
-                    revokedImplementationJustificationLayoutParams.leftMargin = 48
+//                    revokedImplementationJustificationLayoutParams.startToStart = constraintLayout.id
+//                    revokedImplementationJustificationLayoutParams.leftMargin = 48
                     revokedImplementationJustificationLayoutParams.topMargin = 20
                     revokedImplementationJustification.requestLayout()
+
+                    val constraintSet = ConstraintSet()
+                    constraintSet.clone(constraintLayout)
+
+                    constraintSet.connect(
+                        revokedImplementationJustification.id,
+                        ConstraintSet.LEFT,
+                        statusMessage.id,
+                        ConstraintSet.LEFT,
+                        0
+                    )
+                    constraintSet.applyTo(constraintLayout)
 
                 }
 
@@ -237,10 +296,22 @@ class IssueDetailsActivity : AppCompatActivity() {
                     constraintLayout.addView(implementationMessage)
                     val implementationMessageLayoutParams = implementationMessage.layoutParams as ConstraintLayout.LayoutParams
                     implementationMessageLayoutParams.topToBottom = solutionImage.id
-                    implementationMessageLayoutParams.startToStart = constraintLayout.id
-                    implementationMessageLayoutParams.leftMargin = 48
+//                    implementationMessageLayoutParams.startToStart = constraintLayout.id
+//                    implementationMessageLayoutParams.leftMargin = 48
                     implementationMessageLayoutParams.topMargin = 20
                     implementationMessage.requestLayout()
+
+                    val constraintSet = ConstraintSet()
+                    constraintSet.clone(constraintLayout)
+
+                    constraintSet.connect(
+                        implementationMessage.id,
+                        ConstraintSet.LEFT,
+                        statusMessage.id,
+                        ConstraintSet.LEFT,
+                        0
+                    )
+                    constraintSet.applyTo(constraintLayout)
 
                     implementationImage = ImageView(this)
                     implementationImage.id = View.generateViewId()
@@ -253,11 +324,22 @@ class IssueDetailsActivity : AppCompatActivity() {
                     constraintLayout.addView(implementationImage)
                     val implementationImageLayoutParams = implementationImage.layoutParams as ConstraintLayout.LayoutParams
                     implementationImageLayoutParams.topToBottom = implementationMessage.id
-                    implementationImageLayoutParams.startToStart = constraintLayout.id
-                    implementationImageLayoutParams.leftMargin = 48
+//                    implementationImageLayoutParams.startToStart = constraintLayout.id
+//                    implementationImageLayoutParams.leftMargin = 48
                     implementationImageLayoutParams.topMargin = 20
                     implementationImage.requestLayout()
 
+                    val constraintSetImage = ConstraintSet()
+                    constraintSetImage.clone(constraintLayout)
+
+                    constraintSetImage.connect(
+                        implementationImage.id,
+                        ConstraintSet.LEFT,
+                        implementationMessage.id,
+                        ConstraintSet.LEFT,
+                        0
+                    )
+                    constraintSet.applyTo(constraintLayout)
 
 
                 }
@@ -574,5 +656,9 @@ class IssueDetailsActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 
 }
