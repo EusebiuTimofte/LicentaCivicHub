@@ -27,6 +27,15 @@ class TopsActivity : AppCompatActivity() {
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
 
+        setSupportActionBar(binding.toolbarTop)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true;
     }
 
 }
