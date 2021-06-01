@@ -55,4 +55,11 @@
     <string name="position">"%d."</string>
     <string name="top">Top</string>
     <string name="logout">Logout</string>
+    <string name="issue_description_title">"Titlu: %s"</string>
+    <string name="issue_description_description">"Descriere: %s"</string>
+    <string name="issue_description_status">"Status: %s"</string>
+    <string name="issue_description_justification">"Justificare status: %s"</string>
+    <string name="issue_description_solution_proposed">"Solutie propusa: %s"</string>
+    <string name="issue_description_justification_implementation">"Justificare revocare implementare: %s"</string>
+    <string name="issue_description_implementation_details">"Comentariu implementare: %s"</string>
 </resources>

@@ -79,22 +79,22 @@ class IssueDetailsActivity : AppCompatActivity() {
             { response ->
                 // Display the first 500 characters of the response string.
                 jsonObjectResponse = response
-                title.text = jsonObjectResponse.getString("title")
-                description.text = jsonObjectResponse.getString("description")
+                title.text = getString(R.string.issue_description_title).format(jsonObjectResponse.getString("title"))
+                description.text = getString(R.string.issue_description_description).format(jsonObjectResponse.getString("description"))
                 val photosArray = jsonObjectResponse.getJSONArray("photos")
                 if (photosArray.length() >= 1){
                     val imageBytes = Base64.decode(photosArray[0] as String, 0)
                     val imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
                     image.setImageBitmap(imageBitmap)
                 }
-                statusMessage.text = jsonObjectResponse.getJSONObject("lastIssueState").getString("message")
+                statusMessage.text = getString(R.string.issue_description_status).format(jsonObjectResponse.getJSONObject("lastIssueState").getString("message"))
 
                 //add justification in case needed
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 1 &&
                     !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
                         val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
                     revokedSolutionJustification = TextView(this)
-                    revokedSolutionJustification.text = justificationString
+                    revokedSolutionJustification.text = getString(R.string.issue_description_justification).format(justificationString)
                     revokedSolutionJustification.id = View.generateViewId()
                     constraintLayout.addView(revokedSolutionJustification)
                     val revokedSolutionJustificationLayoutParams = revokedSolutionJustification.layoutParams as ConstraintLayout.LayoutParams
@@ -138,7 +138,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 //show solution message and photos
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 2..5){
                     solutionMessage = TextView(this)
-                    solutionMessage.text = jsonObjectResponse.getString("solutionMessage")
+                    solutionMessage.text = getString(R.string.issue_description_solution_proposed).format(jsonObjectResponse.getString("solutionMessage"))
                     solutionMessage.id = View.generateViewId()
                     constraintLayout.addView(solutionMessage)
                     val solutionMessageLayoutParams = solutionMessage.layoutParams as ConstraintLayout.LayoutParams
@@ -180,7 +180,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                     !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
                     val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
                     revokedImplementationJustification = TextView(this)
-                    revokedImplementationJustification.text = justificationString
+                    revokedImplementationJustification.text = getString(R.string.issue_description_justification_implementation).format(justificationString)
                     revokedImplementationJustification.id = View.generateViewId()
                     constraintLayout.addView(revokedImplementationJustification)
                     val revokedImplementationJustificationLayoutParams = revokedImplementationJustification.layoutParams as ConstraintLayout.LayoutParams
@@ -222,7 +222,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 //show implementation message and photos
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 4..5){
                     implementationMessage = TextView(this)
-                    implementationMessage.text = jsonObjectResponse.getString("implementationMessage")
+                    implementationMessage.text = getString(R.string.issue_description_implementation_details).format(jsonObjectResponse.getString("implementationMessage"))
                     implementationMessage.id = View.generateViewId()
                     constraintLayout.addView(implementationMessage)
                     val implementationMessageLayoutParams = implementationMessage.layoutParams as ConstraintLayout.LayoutParams
@@ -322,6 +322,7 @@ class IssueDetailsActivity : AppCompatActivity() {
 
 
     }
+
 
     fun addApproveRevokeButtons(){
         //add buttons
