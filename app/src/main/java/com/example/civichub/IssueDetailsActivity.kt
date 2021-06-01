@@ -47,6 +47,7 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var followButton: Button
     private var followJsonObject: JSONObject? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var userGuid:String
     val SUBMIT_SOLUTION = 1
     val SUBMIT_IMPLEMENTATION = 2
     private var scale by Delegates.notNull<Float>()
@@ -60,6 +61,8 @@ class IssueDetailsActivity : AppCompatActivity() {
         scale = applicationContext.resources.displayMetrics.density
 
         sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+        userGuid = sharedPref.getString(getString(R.string.logged_user_id), "")!!
+
         constraintLayout = findViewById(R.id.constraintLayout)
         title = findViewById(R.id.title)
         description = findViewById(R.id.description)
@@ -444,7 +447,7 @@ class IssueDetailsActivity : AppCompatActivity() {
             revokeButton.requestLayout()
 
             approveButton.setOnClickListener {
-                val urlApprove = "http://10.0.2.2:5000/api/issueState/firstApprovalGiven/$issueId"
+                val urlApprove = "http://10.0.2.2:5000/api/issueState/firstApprovalGiven/$issueId/$userGuid"
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
@@ -457,7 +460,7 @@ class IssueDetailsActivity : AppCompatActivity() {
             }
 
             revokeButton.setOnClickListener {
-                val urlRevoke = "http://10.0.2.2:5000/api/issueState/revoke/$issueId"
+                val urlRevoke = "http://10.0.2.2:5000/api/issueState/revoke/$issueId/$userGuid"
                 val requestRevoke = JsonObjectRequest(
                     Request.Method.POST, urlRevoke, null,
                     {
@@ -500,7 +503,7 @@ class IssueDetailsActivity : AppCompatActivity() {
             revokeButton.requestLayout()
 
             approveButton.setOnClickListener {
-                val urlApprove = "http://10.0.2.2:5000/api/issueState/approveSolution/$issueId"
+                val urlApprove = "http://10.0.2.2:5000/api/issueState/approveSolution/$issueId/$userGuid"
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
@@ -516,7 +519,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 showdialog {
                     result ->
                     if (result != null){
-                        val urlRevoke = "http://10.0.2.2:5000/api/issueState/wrongSolution/$issueId/$result"
+                        val urlRevoke = "http://10.0.2.2:5000/api/issueState/wrongSolution/$issueId/$result/$userGuid"
                         val requestRevoke = JsonObjectRequest(
                             Request.Method.POST, urlRevoke, null,
                             {
@@ -586,7 +589,7 @@ class IssueDetailsActivity : AppCompatActivity() {
             revokeButton.requestLayout()
 
             approveButton.setOnClickListener {
-                val urlApprove = "http://10.0.2.2:5000/api/issueState/approveImplementation/$issueId"
+                val urlApprove = "http://10.0.2.2:5000/api/issueState/approveImplementation/$issueId/$userGuid"
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
@@ -602,7 +605,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 showdialog {
                         result ->
                     if (result != null){
-                        val urlRevoke = "http://10.0.2.2:5000/api/issueState/wrongImplementation/$issueId/$result"
+                        val urlRevoke = "http://10.0.2.2:5000/api/issueState/wrongImplementation/$issueId/$result/$userGuid"
                         val requestRevoke = JsonObjectRequest(
                             Request.Method.POST, urlRevoke, null,
                             {

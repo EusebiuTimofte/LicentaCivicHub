@@ -1,6 +1,7 @@
 package com.example.civichub
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -36,6 +37,9 @@ class SubmitImplementationFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit_implementation_form)
 
+        val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+        val userGuid = sharedPref.getString(getString(R.string.logged_user_id), "")!!
+
         descriptionInput = findViewById(R.id.descriptionEditText)
         addImagesButton = findViewById(R.id.addImagesButton)
         imageView = findViewById(R.id.imageView)
@@ -62,6 +66,7 @@ class SubmitImplementationFormActivity : AppCompatActivity() {
             jsonBody.put("issueId", issueId)
             jsonBody.put("messageFromAuthorities", descriptionInput.text)
             jsonBody.put("photos", JSONArray(base64Codes))
+            jsonBody.put("userId", userGuid)
 
             //Log.d("jsonBody", jsonBody.toString(2))
             // Request a string response from the provided URL.
