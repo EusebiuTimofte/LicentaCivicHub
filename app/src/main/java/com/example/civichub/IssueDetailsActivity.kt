@@ -187,7 +187,9 @@ class IssueDetailsActivity : AppCompatActivity() {
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 3 &&
                     !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
                     val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
+                    Log.d("initialisation", this::revokedImplementationJustification.isInitialized.toString())
                     revokedImplementationJustification = TextView(this)
+                    Log.d("initialisation after", this::revokedImplementationJustification.isInitialized.toString())
                     revokedImplementationJustification.text = getString(R.string.issue_description_justification_implementation).format(justificationString)
                     revokedImplementationJustification.id = View.generateViewId()
                     constraintLayout.addView(revokedImplementationJustification)
@@ -209,7 +211,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                     constraintLayout.addView(addImplementationDetailsButton)
                     val addImplementationDetailsButtonLayoutParams = addImplementationDetailsButton.layoutParams as ConstraintLayout.LayoutParams
                     if (this::revokedImplementationJustification.isInitialized){
-                        addImplementationDetailsButtonLayoutParams.topToBottom = revokedSolutionJustification.id
+                        addImplementationDetailsButtonLayoutParams.topToBottom = revokedImplementationJustification.id
                     }else{
                         addImplementationDetailsButtonLayoutParams.topToBottom = solutionImage.id
                     }
