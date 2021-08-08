@@ -124,9 +124,6 @@ class IssueDetailsActivity : AppCompatActivity() {
                         0
                     )
                     constraintSet.applyTo(constraintLayout)
-
-
-
                 }
 
                 addApproveRevokeButtons()

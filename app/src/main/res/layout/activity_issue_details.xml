@@ -17,11 +17,11 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:text="TextView"
             app:layout_constraintEnd_toStartOf="@+id/followButton"
             app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,6 +67,101 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/title"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/revokedSolutionJustification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusMessage" />
+
+        <Button
+            android:id="@+id/approveIssueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Button"
+            app:layout_constraintEnd_toStartOf="@+id/revokeIssueButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/revokedSolutionJustification" />
+
+        <Button
+            android:id="@+id/revokeIssueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/approveIssueButton"
+            app:layout_constraintTop_toTopOf="@+id/approveIssueButton" />
+
+        <Button
+            android:id="@+id/addSolutionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/approveIssueButton" />
+
+        <TextView
+            android:id="@+id/solutionMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addSolutionButton" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/solutionMessage"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/approveSolutionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Button"
+            app:layout_constraintEnd_toStartOf="@+id/revokeSolutionButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <Button
+            android:id="@+id/revokeSolutionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/approveSolutionButton"
+            app:layout_constraintTop_toTopOf="@+id/approveSolutionButton" />
+
+        <TextView
+            android:id="@+id/revokedImplementationJustification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/approveSolutionButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
