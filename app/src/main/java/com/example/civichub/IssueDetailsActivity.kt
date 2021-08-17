@@ -288,7 +288,7 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 }
 
-                //show implementation message and photos
+                //show implementation message and photo
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 4..5){
                     implementationMessage = TextView(this)
                     implementationMessage.text = getString(R.string.issue_description_implementation_details).format(jsonObjectResponse.getString("implementationMessage"))
@@ -408,7 +408,7 @@ class IssueDetailsActivity : AppCompatActivity() {
 
 
         // Add the request to the RequestQueue.
-        queue.add(request)
+//        queue.add(request)
 
 
 
