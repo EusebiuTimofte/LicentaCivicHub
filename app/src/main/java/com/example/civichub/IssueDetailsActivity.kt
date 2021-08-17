@@ -102,28 +102,29 @@ class IssueDetailsActivity : AppCompatActivity() {
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 1 &&
                     !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
                         val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
-                    revokedSolutionJustification = TextView(this)
+                    revokedSolutionJustification = findViewById(R.id.revokedSolutionJustification)
                     revokedSolutionJustification.text = getString(R.string.issue_description_justification).format(justificationString)
-                    revokedSolutionJustification.id = View.generateViewId()
-                    constraintLayout.addView(revokedSolutionJustification)
-                    val revokedSolutionJustificationLayoutParams = revokedSolutionJustification.layoutParams as ConstraintLayout.LayoutParams
-                    revokedSolutionJustificationLayoutParams.topToBottom = statusMessage.id
-                    revokedSolutionJustificationLayoutParams.startToStart = constraintLayout.id
-                    revokedSolutionJustificationLayoutParams.leftMargin = 48
-                    revokedSolutionJustificationLayoutParams.topMargin = 20
-                    revokedSolutionJustification.requestLayout()
-
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(constraintLayout)
-
-                    constraintSet.connect(
-                        revokedSolutionJustification.id,
-                        ConstraintSet.LEFT,
-                        statusMessage.id,
-                        ConstraintSet.LEFT,
-                        0
-                    )
-                    constraintSet.applyTo(constraintLayout)
+                    revokedImplementationJustification.visibility = View.VISIBLE
+//                    revokedSolutionJustification.id = View.generateViewId()
+//                    constraintLayout.addView(revokedSolutionJustification)
+//                    val revokedSolutionJustificationLayoutParams = revokedSolutionJustification.layoutParams as ConstraintLayout.LayoutParams
+//                    revokedSolutionJustificationLayoutParams.topToBottom = statusMessage.id
+//                    revokedSolutionJustificationLayoutParams.startToStart = constraintLayout.id
+//                    revokedSolutionJustificationLayoutParams.leftMargin = 48
+//                    revokedSolutionJustificationLayoutParams.topMargin = 20
+//                    revokedSolutionJustification.requestLayout()
+//
+//                    val constraintSet = ConstraintSet()
+//                    constraintSet.clone(constraintLayout)
+//
+//                    constraintSet.connect(
+//                        revokedSolutionJustification.id,
+//                        ConstraintSet.LEFT,
+//                        statusMessage.id,
+//                        ConstraintSet.LEFT,
+//                        0
+//                    )
+//                    constraintSet.applyTo(constraintLayout)
                 }
 
                 addApproveRevokeButtons()
@@ -131,21 +132,22 @@ class IssueDetailsActivity : AppCompatActivity() {
                 //add solution button
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 1 &&
                     sharedPref.getInt(getString(R.string.logged_user_type), -1) == 2) {
-                    val addSolutionButton = Button(this)
+                    val addSolutionButton = findViewById<Button>(R.id.addSolutionButton)
                     addSolutionButton.text = getString(R.string.submit_solution)
-                    addSolutionButton.id = View.generateViewId()
-                    constraintLayout.addView(addSolutionButton)
-                    val addSolutionButtonLayoutParams = addSolutionButton.layoutParams as ConstraintLayout.LayoutParams
-                    if (this::revokedSolutionJustification.isInitialized){
-                        addSolutionButtonLayoutParams.topToBottom = revokedSolutionJustification.id
-                    }else{
-                        addSolutionButtonLayoutParams.topToBottom = statusMessage.id
-                    }
-
-                    addSolutionButtonLayoutParams.startToStart = constraintLayout.id
-                    addSolutionButtonLayoutParams.leftMargin = 48
-                    addSolutionButtonLayoutParams.topMargin = 20
-                    addSolutionButton.requestLayout()
+                    addSolutionButton.visibility = View.VISIBLE
+//                    addSolutionButton.id = View.generateViewId()
+//                    constraintLayout.addView(addSolutionButton)
+//                    val addSolutionButtonLayoutParams = addSolutionButton.layoutParams as ConstraintLayout.LayoutParams
+//                    if (this::revokedSolutionJustification.isInitialized){
+//                        addSolutionButtonLayoutParams.topToBottom = revokedSolutionJustification.id
+//                    }else{
+//                        addSolutionButtonLayoutParams.topToBottom = statusMessage.id
+//                    }
+//
+//                    addSolutionButtonLayoutParams.startToStart = constraintLayout.id
+//                    addSolutionButtonLayoutParams.leftMargin = 48
+//                    addSolutionButtonLayoutParams.topMargin = 20
+//                    addSolutionButton.requestLayout()
                     addSolutionButton.setOnClickListener {
                         val intentSubmit = Intent(this, SubmitSolutionActivity::class.java).apply {
                             putExtra("issueId", issueId)
@@ -157,67 +159,69 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 //show solution message and photos
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 2..5){
-                    solutionMessage = TextView(this)
+                    solutionMessage = findViewById(R.id.solutionMessage)
                     solutionMessage.text = getString(R.string.issue_description_solution_proposed).format(jsonObjectResponse.getString("solutionMessage"))
-                    solutionMessage.id = View.generateViewId()
-                    constraintLayout.addView(solutionMessage)
-                    val solutionMessageLayoutParams = solutionMessage.layoutParams as ConstraintLayout.LayoutParams
-                    solutionMessageLayoutParams.topToBottom = statusMessage.id
-//                    solutionMessageLayoutParams.startToStart = statusMessage.id
-//                    solutionMessageLayoutParams.marginStart = (20 * scale).toInt()
-//                    solutionMessageLayoutParams.leftMargin = (20 * scale).toInt()
-//                    solutionMessageLayoutParams.setMargins(20,20,10,0)
-                    solutionMessageLayoutParams.topMargin = 50
-//                    val solutionMessageMarginParams = solutionMessage.layoutParams as ViewGroup.MarginLayoutParams
-//                    solutionMessageMarginParams.setMargins(20,20,10,0)
-                    solutionMessage.requestLayout()
+                    solutionMessage.visibility = View.VISIBLE
+//                    solutionMessage.id = View.generateViewId()
+//                    constraintLayout.addView(solutionMessage)
+//                    val solutionMessageLayoutParams = solutionMessage.layoutParams as ConstraintLayout.LayoutParams
+//                    solutionMessageLayoutParams.topToBottom = statusMessage.id
+////                    solutionMessageLayoutParams.startToStart = statusMessage.id
+////                    solutionMessageLayoutParams.marginStart = (20 * scale).toInt()
+////                    solutionMessageLayoutParams.leftMargin = (20 * scale).toInt()
+////                    solutionMessageLayoutParams.setMargins(20,20,10,0)
+//                    solutionMessageLayoutParams.topMargin = 50
+////                    val solutionMessageMarginParams = solutionMessage.layoutParams as ViewGroup.MarginLayoutParams
+////                    solutionMessageMarginParams.setMargins(20,20,10,0)
+//                    solutionMessage.requestLayout()
+//
+//                    val constraintSet = ConstraintSet()
+//                    constraintSet.clone(constraintLayout)
+//
+//                    constraintSet.connect(
+//                        solutionMessage.id,
+//                        ConstraintSet.LEFT,
+//                        statusMessage.id,
+//                        ConstraintSet.LEFT,
+//                        (20 * scale).toInt()
+//                    )
+//                    constraintSet.connect(
+//                        solutionMessage.id,
+//                        ConstraintSet.END,
+//                        constraintLayout.id,
+//                        ConstraintSet.END,
+//                        0
+//                    )
+//                    constraintSet.applyTo(constraintLayout)
 
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(constraintLayout)
-
-                    constraintSet.connect(
-                        solutionMessage.id,
-                        ConstraintSet.LEFT,
-                        statusMessage.id,
-                        ConstraintSet.LEFT,
-                        (20 * scale).toInt()
-                    )
-                    constraintSet.connect(
-                        solutionMessage.id,
-                        ConstraintSet.END,
-                        constraintLayout.id,
-                        ConstraintSet.END,
-                        0
-                    )
-                    constraintSet.applyTo(constraintLayout)
-
-                    solutionImage = ImageView(this)
-                    solutionImage.id = View.generateViewId()
+                    solutionImage = findViewById(R.id.solutionImage)
+//                    solutionImage.id = View.generateViewId()
                     val solutionPhotosArray = jsonObjectResponse.getJSONArray("solutionPhotos")
                     if (solutionPhotosArray.length() >= 1){
                         val imageBytes = Base64.decode(solutionPhotosArray[0] as String, 0)
                         val imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
                         solutionImage.setImageBitmap(imageBitmap)
                     }
-                    constraintLayout.addView(solutionImage)
-                    val solutionImageLayoutParams = solutionImage.layoutParams as ConstraintLayout.LayoutParams
-                    solutionImageLayoutParams.topToBottom = solutionMessage.id
-//                    solutionImageLayoutParams.startToStart = constraintLayout.id
-//                    solutionImageLayoutParams.leftMargin = 48
-                    solutionImageLayoutParams.topMargin = 20
-                    solutionImage.requestLayout()
-
-
-                    val constraintSetImage = ConstraintSet()
-                    constraintSetImage.clone(constraintLayout)
-                    constraintSetImage.connect(
-                        solutionImage.id,
-                        ConstraintSet.LEFT,
-                        solutionMessage.id,
-                        ConstraintSet.LEFT,
-                        0
-                    )
-                    constraintSetImage.applyTo(constraintLayout)
+                    solutionImage.visibility = View.VISIBLE
+//                    constraintLayout.addView(solutionImage)
+//                    val solutionImageLayoutParams = solutionImage.layoutParams as ConstraintLayout.LayoutParams
+//                    solutionImageLayoutParams.topToBottom = solutionMessage.id
+////                    solutionImageLayoutParams.startToStart = constraintLayout.id
+////                    solutionImageLayoutParams.leftMargin = 48
+//                    solutionImageLayoutParams.topMargin = 20
+//                    solutionImage.requestLayout()
+//
+//
+//                    val constraintSetImage = ConstraintSet()
+//                    constraintSetImage.clone(constraintLayout)
+//                    constraintSetImage.connect(
+//                        solutionImage.id,
+//                        ConstraintSet.LEFT,
+//                        solutionMessage.id,
+//                        ConstraintSet.LEFT,
+//                        0
+//                    )
+//                    constraintSetImage.applyTo(constraintLayout)
 
 
 
@@ -235,50 +239,52 @@ class IssueDetailsActivity : AppCompatActivity() {
                     !jsonObjectResponse.getJSONObject("lastIssueState").isNull("customMessage")){
                     val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
                     Log.d("initialisation", this::revokedImplementationJustification.isInitialized.toString())
-                    revokedImplementationJustification = TextView(this)
+                    revokedImplementationJustification = findViewById(R.id.revokedImplementationJustification)
                     Log.d("initialisation after", this::revokedImplementationJustification.isInitialized.toString())
                     revokedImplementationJustification.text = getString(R.string.issue_description_justification_implementation).format(justificationString)
-                    revokedImplementationJustification.id = View.generateViewId()
-                    constraintLayout.addView(revokedImplementationJustification)
-                    val revokedImplementationJustificationLayoutParams = revokedImplementationJustification.layoutParams as ConstraintLayout.LayoutParams
-                    revokedImplementationJustificationLayoutParams.topToBottom = solutionImage.id
-//                    revokedImplementationJustificationLayoutParams.startToStart = constraintLayout.id
-//                    revokedImplementationJustificationLayoutParams.leftMargin = 48
-                    revokedImplementationJustificationLayoutParams.topMargin = 20
-                    revokedImplementationJustification.requestLayout()
-
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(constraintLayout)
-
-                    constraintSet.connect(
-                        revokedImplementationJustification.id,
-                        ConstraintSet.LEFT,
-                        statusMessage.id,
-                        ConstraintSet.LEFT,
-                        0
-                    )
-                    constraintSet.applyTo(constraintLayout)
+                    revokedImplementationJustification.visibility = View.VISIBLE
+//                    revokedImplementationJustification.id = View.generateViewId()
+//                    constraintLayout.addView(revokedImplementationJustification)
+//                    val revokedImplementationJustificationLayoutParams = revokedImplementationJustification.layoutParams as ConstraintLayout.LayoutParams
+//                    revokedImplementationJustificationLayoutParams.topToBottom = solutionImage.id
+////                    revokedImplementationJustificationLayoutParams.startToStart = constraintLayout.id
+////                    revokedImplementationJustificationLayoutParams.leftMargin = 48
+//                    revokedImplementationJustificationLayoutParams.topMargin = 20
+//                    revokedImplementationJustification.requestLayout()
+//
+//                    val constraintSet = ConstraintSet()
+//                    constraintSet.clone(constraintLayout)
+//
+//                    constraintSet.connect(
+//                        revokedImplementationJustification.id,
+//                        ConstraintSet.LEFT,
+//                        statusMessage.id,
+//                        ConstraintSet.LEFT,
+//                        0
+//                    )
+//                    constraintSet.applyTo(constraintLayout)
 
                 }
 
                 //add implementation details button
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 3 &&
                     sharedPref.getInt(getString(R.string.logged_user_type), -1) == 2) {
-                    addImplementationDetailsButton = Button(this)
+                    addImplementationDetailsButton = findViewById(R.id.addImplementationDetails)
                     addImplementationDetailsButton.text = getString(R.string.submit_implementation)
-                    addImplementationDetailsButton.id = View.generateViewId()
-                    constraintLayout.addView(addImplementationDetailsButton)
-                    val addImplementationDetailsButtonLayoutParams = addImplementationDetailsButton.layoutParams as ConstraintLayout.LayoutParams
-                    if (this::revokedImplementationJustification.isInitialized){
-                        addImplementationDetailsButtonLayoutParams.topToBottom = revokedImplementationJustification.id
-                    }else{
-                        addImplementationDetailsButtonLayoutParams.topToBottom = solutionImage.id
-                    }
-
-                    addImplementationDetailsButtonLayoutParams.startToStart = constraintLayout.id
-                    addImplementationDetailsButtonLayoutParams.leftMargin = 48
-                    addImplementationDetailsButtonLayoutParams.topMargin = 20
-                    addImplementationDetailsButton.requestLayout()
+                    addImplementationDetailsButton.visibility = View.VISIBLE
+//                    addImplementationDetailsButton.id = View.generateViewId()
+//                    constraintLayout.addView(addImplementationDetailsButton)
+//                    val addImplementationDetailsButtonLayoutParams = addImplementationDetailsButton.layoutParams as ConstraintLayout.LayoutParams
+//                    if (this::revokedImplementationJustification.isInitialized){
+//                        addImplementationDetailsButtonLayoutParams.topToBottom = revokedImplementationJustification.id
+//                    }else{
+//                        addImplementationDetailsButtonLayoutParams.topToBottom = solutionImage.id
+//                    }
+//
+//                    addImplementationDetailsButtonLayoutParams.startToStart = constraintLayout.id
+//                    addImplementationDetailsButtonLayoutParams.leftMargin = 48
+//                    addImplementationDetailsButtonLayoutParams.topMargin = 20
+//                    addImplementationDetailsButton.requestLayout()
                     addImplementationDetailsButton.setOnClickListener {
                         val intentSubmit = Intent(this, SubmitImplementationFormActivity::class.java).apply {
                             putExtra("issueId", issueId)
@@ -290,56 +296,58 @@ class IssueDetailsActivity : AppCompatActivity() {
 
                 //show implementation message and photo
                 if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") in 4..5){
-                    implementationMessage = TextView(this)
+                    implementationMessage = findViewById(R.id.implementationMessage)
                     implementationMessage.text = getString(R.string.issue_description_implementation_details).format(jsonObjectResponse.getString("implementationMessage"))
-                    implementationMessage.id = View.generateViewId()
-                    constraintLayout.addView(implementationMessage)
-                    val implementationMessageLayoutParams = implementationMessage.layoutParams as ConstraintLayout.LayoutParams
-                    implementationMessageLayoutParams.topToBottom = solutionImage.id
-//                    implementationMessageLayoutParams.startToStart = constraintLayout.id
-//                    implementationMessageLayoutParams.leftMargin = 48
-                    implementationMessageLayoutParams.topMargin = 20
-                    implementationMessage.requestLayout()
+                    implementationMessage.visibility = View.VISIBLE
+//                    implementationMessage.id = View.generateViewId()
+//                    constraintLayout.addView(implementationMessage)
+//                    val implementationMessageLayoutParams = implementationMessage.layoutParams as ConstraintLayout.LayoutParams
+//                    implementationMessageLayoutParams.topToBottom = solutionImage.id
+////                    implementationMessageLayoutParams.startToStart = constraintLayout.id
+////                    implementationMessageLayoutParams.leftMargin = 48
+//                    implementationMessageLayoutParams.topMargin = 20
+//                    implementationMessage.requestLayout()
+//
+//                    val constraintSet = ConstraintSet()
+//                    constraintSet.clone(constraintLayout)
+//
+//                    constraintSet.connect(
+//                        implementationMessage.id,
+//                        ConstraintSet.LEFT,
+//                        statusMessage.id,
+//                        ConstraintSet.LEFT,
+//                        0
+//                    )
+//                    constraintSet.applyTo(constraintLayout)
 
-                    val constraintSet = ConstraintSet()
-                    constraintSet.clone(constraintLayout)
-
-                    constraintSet.connect(
-                        implementationMessage.id,
-                        ConstraintSet.LEFT,
-                        statusMessage.id,
-                        ConstraintSet.LEFT,
-                        0
-                    )
-                    constraintSet.applyTo(constraintLayout)
-
-                    implementationImage = ImageView(this)
-                    implementationImage.id = View.generateViewId()
+                    implementationImage = findViewById(R.id.implementationImage)
+//                    implementationImage.id = View.generateViewId()
                     val solutionPhotosArray = jsonObjectResponse.getJSONArray("implementationPhotos")
                     if (solutionPhotosArray.length() >= 1){
                         val imageBytes = Base64.decode(solutionPhotosArray[0] as String, 0)
                         val imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
                         implementationImage.setImageBitmap(imageBitmap)
                     }
-                    constraintLayout.addView(implementationImage)
-                    val implementationImageLayoutParams = implementationImage.layoutParams as ConstraintLayout.LayoutParams
-                    implementationImageLayoutParams.topToBottom = implementationMessage.id
-//                    implementationImageLayoutParams.startToStart = constraintLayout.id
-//                    implementationImageLayoutParams.leftMargin = 48
-                    implementationImageLayoutParams.topMargin = 20
-                    implementationImage.requestLayout()
-
-                    val constraintSetImage = ConstraintSet()
-                    constraintSetImage.clone(constraintLayout)
-
-                    constraintSetImage.connect(
-                        implementationImage.id,
-                        ConstraintSet.LEFT,
-                        implementationMessage.id,
-                        ConstraintSet.LEFT,
-                        0
-                    )
-                    constraintSet.applyTo(constraintLayout)
+                    implementationImage.visibility = View.VISIBLE
+//                    constraintLayout.addView(implementationImage)
+//                    val implementationImageLayoutParams = implementationImage.layoutParams as ConstraintLayout.LayoutParams
+//                    implementationImageLayoutParams.topToBottom = implementationMessage.id
+////                    implementationImageLayoutParams.startToStart = constraintLayout.id
+////                    implementationImageLayoutParams.leftMargin = 48
+//                    implementationImageLayoutParams.topMargin = 20
+//                    implementationImage.requestLayout()
+//
+//                    val constraintSetImage = ConstraintSet()
+//                    constraintSetImage.clone(constraintLayout)
+//
+//                    constraintSetImage.connect(
+//                        implementationImage.id,
+//                        ConstraintSet.LEFT,
+//                        implementationMessage.id,
+//                        ConstraintSet.LEFT,
+//                        0
+//                    )
+//                    constraintSet.applyTo(constraintLayout)
 
 
                 }
@@ -408,7 +416,7 @@ class IssueDetailsActivity : AppCompatActivity() {
 
 
         // Add the request to the RequestQueue.
-//        queue.add(request)
+        queue.add(request)
 
 
 
@@ -422,26 +430,28 @@ class IssueDetailsActivity : AppCompatActivity() {
         if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 0 &&
             sharedPref.getInt(getString(R.string.logged_user_type), -1) == 3){
 
-            val approveButton = Button(this)
+            val approveButton = findViewById<Button>(R.id.approveIssueButton)
             approveButton.text = getString(R.string.approve_issue)
-            approveButton.id = View.generateViewId()
-            constraintLayout.addView(approveButton)
-            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
-            approveButtonLayoutParams.topToBottom = statusMessage.id
-            approveButtonLayoutParams.startToStart = constraintLayout.id
-            approveButtonLayoutParams.leftMargin = 48
-            approveButtonLayoutParams.topMargin = 20
-            approveButton.requestLayout()
+            approveButton.visibility = View.VISIBLE
+//            approveButton.id = View.generateViewId()
+//            constraintLayout.addView(approveButton)
+//            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
+//            approveButtonLayoutParams.topToBottom = statusMessage.id
+//            approveButtonLayoutParams.startToStart = constraintLayout.id
+//            approveButtonLayoutParams.leftMargin = 48
+//            approveButtonLayoutParams.topMargin = 20
+//            approveButton.requestLayout()
 
-            val revokeButton = Button(this)
+            val revokeButton = findViewById<Button>(R.id.revokeIssueButton)
             revokeButton.text = getString(R.string.revoke_issue)
-            constraintLayout.addView(revokeButton)
-            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
-            revokeButtonLayoutParams.topToBottom = approveButton.id
-            revokeButtonLayoutParams.startToStart = constraintLayout.id
-            revokeButtonLayoutParams.leftMargin = 48
-            revokeButtonLayoutParams.topMargin = 20
-            revokeButton.requestLayout()
+            revokeButton.visibility = View.VISIBLE
+//            constraintLayout.addView(revokeButton)
+//            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
+//            revokeButtonLayoutParams.topToBottom = approveButton.id
+//            revokeButtonLayoutParams.startToStart = constraintLayout.id
+//            revokeButtonLayoutParams.leftMargin = 48
+//            revokeButtonLayoutParams.topMargin = 20
+//            revokeButton.requestLayout()
 
             approveButton.setOnClickListener {
                 val urlApprove = "http://10.0.2.2:5000/api/issueState/firstApprovalGiven/$issueId/$userGuid"
@@ -478,26 +488,28 @@ class IssueDetailsActivity : AppCompatActivity() {
         if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 2 &&
             sharedPref.getInt(getString(R.string.logged_user_type), -1) == 3){
 
-            val approveButton = Button(this)
+            val approveButton = findViewById<Button>(R.id.approveSolutionButton)
             approveButton.text = getString(R.string.approve_solution)
-            approveButton.id = View.generateViewId()
-            constraintLayout.addView(approveButton)
-            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
-            approveButtonLayoutParams.topToBottom = solutionImage.id
-            approveButtonLayoutParams.startToStart = constraintLayout.id
-            approveButtonLayoutParams.leftMargin = 48
-            approveButtonLayoutParams.topMargin = 20
-            approveButton.requestLayout()
+            approveButton.visibility = View.VISIBLE
+//            approveButton.id = View.generateViewId()
+//            constraintLayout.addView(approveButton)
+//            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
+//            approveButtonLayoutParams.topToBottom = solutionImage.id
+//            approveButtonLayoutParams.startToStart = constraintLayout.id
+//            approveButtonLayoutParams.leftMargin = 48
+//            approveButtonLayoutParams.topMargin = 20
+//            approveButton.requestLayout()
 
-            val revokeButton = Button(this)
+            val revokeButton = findViewById<Button>(R.id.revokeSolutionButton)
             revokeButton.text = getString(R.string.revoke_solution)
-            constraintLayout.addView(revokeButton)
-            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
-            revokeButtonLayoutParams.topToBottom = approveButton.id
-            revokeButtonLayoutParams.startToStart = constraintLayout.id
-            revokeButtonLayoutParams.leftMargin = 48
-            revokeButtonLayoutParams.topMargin = 20
-            revokeButton.requestLayout()
+            revokeButton.visibility = View.VISIBLE
+//            constraintLayout.addView(revokeButton)
+//            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
+//            revokeButtonLayoutParams.topToBottom = approveButton.id
+//            revokeButtonLayoutParams.startToStart = constraintLayout.id
+//            revokeButtonLayoutParams.leftMargin = 48
+//            revokeButtonLayoutParams.topMargin = 20
+//            revokeButton.requestLayout()
 
             approveButton.setOnClickListener {
                 val urlApprove = "http://10.0.2.2:5000/api/issueState/approveSolution/$issueId/$userGuid"
@@ -564,26 +576,28 @@ class IssueDetailsActivity : AppCompatActivity() {
         if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 4 &&
             sharedPref.getInt(getString(R.string.logged_user_type), -1) == 3){
 
-            val approveButton = Button(this)
+            val approveButton = findViewById<Button>(R.id.approveImplementationButton)
             approveButton.text = getString(R.string.approve_implementation)
-            approveButton.id = View.generateViewId()
-            constraintLayout.addView(approveButton)
-            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
-            approveButtonLayoutParams.topToBottom = implementationImage.id
-            approveButtonLayoutParams.startToStart = constraintLayout.id
-            approveButtonLayoutParams.leftMargin = 48
-            approveButtonLayoutParams.topMargin = 20
-            approveButton.requestLayout()
+            approveButton.visibility = View.VISIBLE
+//            approveButton.id = View.generateViewId()
+//            constraintLayout.addView(approveButton)
+//            val approveButtonLayoutParams = approveButton.layoutParams as ConstraintLayout.LayoutParams
+//            approveButtonLayoutParams.topToBottom = implementationImage.id
+//            approveButtonLayoutParams.startToStart = constraintLayout.id
+//            approveButtonLayoutParams.leftMargin = 48
+//            approveButtonLayoutParams.topMargin = 20
+//            approveButton.requestLayout()
 
-            val revokeButton = Button(this)
+            val revokeButton = findViewById<Button>(R.id.revokeImplementationButton)
             revokeButton.text = getString(R.string.revoke_implementation)
-            constraintLayout.addView(revokeButton)
-            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
-            revokeButtonLayoutParams.topToBottom = approveButton.id
-            revokeButtonLayoutParams.startToStart = constraintLayout.id
-            revokeButtonLayoutParams.leftMargin = 48
-            revokeButtonLayoutParams.topMargin = 20
-            revokeButton.requestLayout()
+            revokeButton.visibility = View.VISIBLE
+//            constraintLayout.addView(revokeButton)
+//            val revokeButtonLayoutParams = revokeButton.layoutParams as ConstraintLayout.LayoutParams
+//            revokeButtonLayoutParams.topToBottom = approveButton.id
+//            revokeButtonLayoutParams.startToStart = constraintLayout.id
+//            revokeButtonLayoutParams.leftMargin = 48
+//            revokeButtonLayoutParams.topMargin = 20
+//            revokeButton.requestLayout()
 
             approveButton.setOnClickListener {
                 val urlApprove = "http://10.0.2.2:5000/api/issueState/approveImplementation/$issueId/$userGuid"

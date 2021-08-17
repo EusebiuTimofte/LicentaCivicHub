@@ -79,6 +79,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/statusMessage" />
@@ -89,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/revokeIssueButton"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/approveIssueButton"
@@ -110,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Button"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/approveIssueButton" />
@@ -122,15 +125,17 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="TextView"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addSolutionButton" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/solutionImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/solutionMessage"
@@ -142,16 +147,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/revokeSolutionButton"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/solutionImage" />
 
             <Button
                 android:id="@+id/revokeSolutionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/approveSolutionButton"
@@ -164,6 +171,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/approveSolutionButton" />
@@ -174,6 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/revokedImplementationJustification" />
@@ -185,8 +194,9 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
-                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
 
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addImplementationDetails" />
 
             <ImageView
@@ -194,6 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/implementationMessage"
@@ -205,6 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/revokeImplementationButton"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -215,6 +227,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Button"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/approveImplementationButton"
