@@ -153,4 +153,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="issue_details_scroll_view">issue details scroll view</string>
 </resources>
