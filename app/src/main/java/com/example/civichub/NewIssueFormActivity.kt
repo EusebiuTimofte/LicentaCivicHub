@@ -87,6 +87,7 @@ class NewIssueFormActivity : AppCompatActivity() {
                 Request.Method.POST, url,jsonBody,
                 { response ->
                     Log.d("asd", "asd")
+                    Toast.makeText(this, "Reclamatia a fost creata cu succes", Toast.LENGTH_SHORT).show()
                     val intentMap = Intent(this, CustomMapActivity::class.java)
                     intentMap.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intentMap)

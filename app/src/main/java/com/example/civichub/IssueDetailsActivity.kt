@@ -1,6 +1,7 @@
 package com.example.civichub
 
 import android.R.attr.button
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -458,6 +459,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
+                        Toast.makeText(this, "Reclamatia a fost aprobata",Toast.LENGTH_SHORT).show();
                         recreate()
                     },
                     {
@@ -471,6 +473,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestRevoke = JsonObjectRequest(
                     Request.Method.POST, urlRevoke, null,
                     {
+                        Toast.makeText(this, "Reclamatia a fost respinsa",Toast.LENGTH_SHORT).show();
                         recreate()
                     },
                     {
@@ -516,6 +519,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
+                        Toast.makeText(this, "Solutia a fost aprobata",Toast.LENGTH_SHORT).show();
                         recreate()
                     },
                     {
@@ -532,6 +536,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                         val requestRevoke = JsonObjectRequest(
                             Request.Method.POST, urlRevoke, null,
                             {
+                                Toast.makeText(this, "Solutia a fost respinsa",Toast.LENGTH_SHORT).show();
                                 recreate()
                             },
                             {
@@ -604,6 +609,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
+                        Toast.makeText(this, "Modul de implementare a fost aprobat",Toast.LENGTH_SHORT).show();
                         recreate()
                     },
                     {
@@ -620,6 +626,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                         val requestRevoke = JsonObjectRequest(
                             Request.Method.POST, urlRevoke, null,
                             {
+                                Toast.makeText(this, "Modul de implementare a fost respins",Toast.LENGTH_SHORT).show();
                                 recreate()
                             },
                             {
@@ -662,10 +669,16 @@ class IssueDetailsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == SUBMIT_SOLUTION) {
+            if (resultCode == Activity.RESULT_OK){
+                Toast.makeText(this, "Solutia a fost adaugata", Toast.LENGTH_SHORT).show()
+            }
             recreate()
         }
 
         if (requestCode == SUBMIT_IMPLEMENTATION) {
+            if (resultCode == Activity.RESULT_OK){
+                Toast.makeText(this, "Implementarea a fost adaugata", Toast.LENGTH_SHORT).show()
+            }
             recreate()
         }
     }
