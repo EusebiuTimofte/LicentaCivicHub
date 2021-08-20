@@ -49,7 +49,6 @@ class SubmitImplementationFormActivity : AppCompatActivity() {
         addImagesButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
                 type = "image/*"
-                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
             if (intent.resolveActivity(packageManager) != null) {
                 startActivityForResult(intent, REQUEST_IMAGE_GET)

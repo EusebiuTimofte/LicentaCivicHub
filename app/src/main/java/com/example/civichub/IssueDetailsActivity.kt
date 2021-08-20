@@ -104,7 +104,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                         val justificationString = jsonObjectResponse.getJSONObject("lastIssueState").getString("customMessage")
                     revokedSolutionJustification = findViewById(R.id.revokedSolutionJustification)
                     revokedSolutionJustification.text = getString(R.string.issue_description_justification).format(justificationString)
-                    revokedImplementationJustification.visibility = View.VISIBLE
+                    revokedSolutionJustification.visibility = View.VISIBLE
 //                    revokedSolutionJustification.id = View.generateViewId()
 //                    constraintLayout.addView(revokedSolutionJustification)
 //                    val revokedSolutionJustificationLayoutParams = revokedSolutionJustification.layoutParams as ConstraintLayout.LayoutParams
