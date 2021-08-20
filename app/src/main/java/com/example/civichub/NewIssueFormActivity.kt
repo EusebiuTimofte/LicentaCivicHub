@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -126,6 +127,8 @@ class NewIssueFormActivity : AppCompatActivity() {
                 val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
                 base64Codes.add(Base64.encodeToString(byteArray, Base64.DEFAULT))
             }
+
+            addImagineButton.visibility = View.GONE
 
         }
     }
