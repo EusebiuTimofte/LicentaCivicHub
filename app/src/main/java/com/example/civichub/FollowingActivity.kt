@@ -74,6 +74,41 @@ class FollowingActivity : AppCompatActivity() {
 //        }
 //    }
 
+    override fun onResume() {
+        super.onResume()
+        val queue = Volley.newRequestQueue(this.applicationContext)
+
+        //set follow button on click listeners
+        val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
+        val userId = sharedPref.getString(getString(R.string.logged_user_id), "")
+        val followUrl = "http://10.0.2.2:5000/api/Follow/getAllByUser/$userId"
+        val followRequest = StringRequest(
+            Request.Method.GET, followUrl,
+            {
+                // Display the first 500 characters of the response string.
+                val followArray = JSONArray(it)
+                viewManager = LinearLayoutManager(this.applicationContext)
+                val aux = mutableListOf<JSONObject>()
+                for (i in 0 until followArray.length()) {
+                    aux.add(followArray.getJSONObject(i))
+                }
+
+                viewAdapter = FollowingAdapter(aux.toTypedArray(), this.applicationContext)
+
+                recyclerView = findViewById<RecyclerView>(R.id.followingRecyclerView).apply {
+                    setHasFixedSize(true)
+                    layoutManager = viewManager
+                    adapter = viewAdapter
+                    addItemDecoration(ItemDecorationFollowing(2))
+                }
+
+            },
+            { error ->
+
+            })
+        queue.add(followRequest)
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true

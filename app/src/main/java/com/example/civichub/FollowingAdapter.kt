@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
@@ -24,14 +25,12 @@ public class FollowingAdapter (private val dataSet: Array<JSONObject>, private v
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val followingTitleText: TextView
-        val followingDescriptionText: TextView
         val followingAddressText: TextView
-        val layout: ConstraintLayout
+        val layout: CardView
 
         init {
             // Define click listener for the ViewHolder's View.
             followingTitleText = view.findViewById(R.id.followingTitleText)
-            followingDescriptionText = view.findViewById(R.id.followingDescriptionText)
             followingAddressText = view.findViewById(R.id.followingAddressText)
             layout = view.findViewById(R.id.layoutFollowingCell)
         }
@@ -53,7 +52,6 @@ public class FollowingAdapter (private val dataSet: Array<JSONObject>, private v
         Log.d("holder", dataSet[position].getJSONObject("issue").getString("title"))
         Log.d("holder nyez", dataSet[position].getJSONObject("issue").getString("description"))
         holder.followingTitleText.text = dataSet[position].getJSONObject("issue").getString("title")
-        holder.followingDescriptionText.text = dataSet[position].getJSONObject("issue").getString("description")
         val geocoder: Geocoder = Geocoder(pContext, Locale.getDefault())
         try{
             val addresses = geocoder.getFromLocation(dataSet[position].getJSONObject("issue")
