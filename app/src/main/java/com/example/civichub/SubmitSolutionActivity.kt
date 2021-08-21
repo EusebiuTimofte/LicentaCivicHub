@@ -17,16 +17,20 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
 class SubmitSolutionActivity : AppCompatActivity() {
 
-    private lateinit var descriptionInput: TextView
+    private lateinit var descriptionInput: TextInputEditText
+    private lateinit var descriptionTextInputLayout: TextInputLayout
     private lateinit var addImagesButton: Button
     private lateinit var imageView: ImageView
     private lateinit var submitButton: Button
@@ -43,11 +47,24 @@ class SubmitSolutionActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
         userGuid = sharedPref.getString(getString(R.string.logged_user_id), "")!!
 
-        descriptionInput = findViewById(R.id.descriptionEditText)
+        descriptionInput = findViewById(R.id.descriptionTextInputEditText)
+        descriptionTextInputLayout = findViewById(R.id.descriptionTextInputLayout)
         addImagesButton = findViewById(R.id.addImagesButton)
         imageView = findViewById(R.id.imageView)
         submitButton = findViewById(R.id.submitSolutionButton)
         base64Codes = mutableListOf()
+
+        submitButton.isEnabled = false
+
+        descriptionInput.doOnTextChanged { text, start, before, count ->
+            if (count < 3) {
+                descriptionTextInputLayout.error = applicationContext.resources.getString(R.string.minimum_length_edit_text)
+                submitButton.isEnabled = false
+            }else{
+                descriptionTextInputLayout.error = null
+                submitButton.isEnabled = true
+            }
+        }
 
         addImagesButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -61,6 +78,7 @@ class SubmitSolutionActivity : AppCompatActivity() {
         issueId = intent.getStringExtra("issueId")!!
 
         submitButton.setOnClickListener {
+
             val queue = Volley.newRequestQueue(this.applicationContext)
             val url = "http://10.0.2.2:5000/api/issueState/solutionGiven"
 
@@ -104,26 +122,28 @@ class SubmitSolutionActivity : AppCompatActivity() {
 
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK && data != null) {
 
-            for (i in 0 until data.clipData!!.itemCount) {
-                val fullPhotoUri: Uri = data.clipData!!.getItemAt(i).uri
-                val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    ImageDecoder.decodeBitmap(
-                        ImageDecoder.createSource(
-                            contentResolver,
-                            fullPhotoUri
-                        )
+//            for (i in 0 until data.clipData!!.itemCount) {
+//                val fullPhotoUri: Uri = data.clipData!!.getItemAt(i).uri
+            val fullPhotoUri: Uri = data.data!!
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ImageDecoder.decodeBitmap(
+                    ImageDecoder.createSource(
+                        contentResolver,
+                        fullPhotoUri
                     )
-                } else {
-                    MediaStore.Images.Media.getBitmap(contentResolver, fullPhotoUri)
-                }
-                imageView.setImageBitmap(bitmap)
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-                val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
-                base64Codes.add(Base64.encodeToString(byteArray, Base64.DEFAULT))
+                )
+            } else {
+                MediaStore.Images.Media.getBitmap(contentResolver, fullPhotoUri)
             }
+            imageView.setImageBitmap(bitmap)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+            base64Codes.add(Base64.encodeToString(byteArray, Base64.DEFAULT))
+//            }
+            addImagesButton.visibility = View.GONE
         }
 
-        addImagesButton.visibility = View.GONE
+
     }
 }

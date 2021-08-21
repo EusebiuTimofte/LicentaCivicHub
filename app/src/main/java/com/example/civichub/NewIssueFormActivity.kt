@@ -146,9 +146,10 @@ class NewIssueFormActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_IMAGE_GET && resultCode == Activity.RESULT_OK && data!=null) {
-            for (i in 0 until data.clipData!!.itemCount){
-                val fullPhotoUri: Uri = data.clipData!!.getItemAt(i).uri
-//                val fullPhotoUri: Uri = data.data!!
+//            for (i in 0 until data.clipData!!.itemCount){
+
+//                val fullPhotoUri: Uri = data.clipData!!.getItemAt(i).uri
+                val fullPhotoUri: Uri = data.data!!
                 val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, fullPhotoUri))
                 } else {
@@ -163,7 +164,7 @@ class NewIssueFormActivity : AppCompatActivity() {
 
             addImagineButton.visibility = View.GONE
 
-        }
+//        }
     }
 
 

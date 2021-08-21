@@ -14,20 +14,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/descriptionEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/descriptionTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
                 android:ems="10"
-                android:hint="@string/solution_description"
                 android:inputType="textMultiLine"
                 android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/descriptionTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/solution_description"
+                    android:minHeight="48dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/addImagesButton"
@@ -37,7 +46,7 @@
                 android:text="@string/pick_images_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextInputLayout" />
 
             <ImageView
                 android:id="@+id/imageView"
