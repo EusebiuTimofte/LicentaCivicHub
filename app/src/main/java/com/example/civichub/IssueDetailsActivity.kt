@@ -45,7 +45,7 @@ class IssueDetailsActivity : AppCompatActivity() {
     private lateinit var revokedImplementationJustification: TextView
     private lateinit var implementationMessage: TextView
     private lateinit var implementationImage: ImageView
-    private lateinit var followButton: Button
+    private lateinit var followButton: ImageButton
     private var followJsonObject: JSONObject? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var userGuid:String
@@ -363,13 +363,15 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val followRequest = StringRequest(Request.Method.GET, followUrl,
                     {
                         // Display the first 500 characters of the response string.
-                        followButton.setBackgroundColor(Color.GREEN)
+//                        followButton.setBackgroundColor(Color.GREEN)
+                        followButton.setImageResource(android.R.drawable.btn_star_big_on)
                         followJsonObject = JSONObject(it)
                     },
                     { error ->
 
 //                        if (error.message!! == "Follow not found"){
-                            followButton.setBackgroundColor(Color.RED)
+//                            followButton.setBackgroundColor(Color.RED)
+                        followButton.setImageResource(android.R.drawable.btn_star_big_off)
                             followJsonObject = null
 //                        }else{
 //                            Toast.makeText(this.applicationContext, "Error checking following", Toast.LENGTH_LONG).show()

@@ -15,7 +15,7 @@ import org.json.JSONObject
 import java.lang.Exception
 import java.util.*
 
-public class FollowingAdapter (private val dataSet: Array<JSONObject>, private val context: Context) :
+public class FollowingAdapter (private val dataSet: Array<JSONObject>, private val pContext: Context) :
     RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
     /**
@@ -54,7 +54,7 @@ public class FollowingAdapter (private val dataSet: Array<JSONObject>, private v
         Log.d("holder nyez", dataSet[position].getJSONObject("issue").getString("description"))
         holder.followingTitleText.text = dataSet[position].getJSONObject("issue").getString("title")
         holder.followingDescriptionText.text = dataSet[position].getJSONObject("issue").getString("description")
-        val geocoder: Geocoder = Geocoder(context, Locale.getDefault())
+        val geocoder: Geocoder = Geocoder(pContext, Locale.getDefault())
         try{
             val addresses = geocoder.getFromLocation(dataSet[position].getJSONObject("issue")
                 .getDouble("latitude"), dataSet[position].getJSONObject("issue")
@@ -62,7 +62,8 @@ public class FollowingAdapter (private val dataSet: Array<JSONObject>, private v
             holder.followingAddressText.text = addresses.get(0).getAddressLine(0)
 
         }catch (e: Exception){
-            holder.followingAddressText.text = Resources.getSystem().getString(R.string.error_fetching_address)
+//            holder.followingAddressText.text = Resources.getSystem().getString(R.string.error_fetching_address)
+            holder.followingAddressText.text = holder.layout.context.resources.getText(R.string.error_fetching_address)
         }
 
         Log.d("issueId", dataSet[position].getJSONObject("issue").getString("id"))
