@@ -3,24 +3,17 @@ package com.example.civichub
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.core.app.NavUtils
 import androidx.core.widget.doOnTextChanged
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.civichub.ui.login.LoginActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import org.json.JSONException
 import org.json.JSONObject
-import java.nio.charset.Charset
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -46,7 +39,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
 
         registerButton.isEnabled = false
 
-        emailTextInputEditText.doOnTextChanged { text, start, before, count ->
+        emailTextInputEditText.doOnTextChanged { text, _, _, _ ->
             if (!Pattern.matches("[A-Za-z0-9_]{3,}@[A-za-z]{3,10}\\.[a-z]{3}", text ?: "")){
                 emailTextInputLayout.error = applicationContext.resources.getString(R.string.invalid_mail)
                 registerButton.isEnabled = false
@@ -59,7 +52,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             }
         }
 
-        passwordTextInputEditText.doOnTextChanged { text, start, before, count ->
+        passwordTextInputEditText.doOnTextChanged { text, _, _, _ ->
             if (!Pattern.matches(".{5,}", text ?: "")){
                 passwordTextInputLayout.error = applicationContext.resources.getString(R.string.minimum_length_password_edit_text)
                 registerButton.isEnabled = false
@@ -72,7 +65,7 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             }
         }
 
-        repeatPasswordTextInputEditText.doOnTextChanged { text, start, before, count ->
+        repeatPasswordTextInputEditText.doOnTextChanged { text, _, _, _ ->
             if ((text?:"").toString() != passwordTextInputEditText.text.toString()){
                 repeatPasswordTextInputLayout.error = applicationContext.resources.getString(R.string.wrong_passwords)
                 registerButton.isEnabled = false
@@ -90,11 +83,10 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             // Instantiate the RequestQueue.
             val queue = Volley.newRequestQueue(this)
             val url = "http://10.0.2.2:5000/api/auth/register"
-            var jsonBody = JSONObject()
+            val jsonBody = JSONObject()
             jsonBody.put("mail", emailTextInputEditText.text)
             jsonBody.put("password", passwordTextInputEditText.text)
             jsonBody.put("tip", userTypeSelected)
-            val jsonText = jsonBody.toString()
 
             // Request a json response from the provided URL.
             val jsonObjectRequest = JsonObjectRequest(

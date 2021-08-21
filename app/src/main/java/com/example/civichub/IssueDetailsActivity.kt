@@ -1,13 +1,11 @@
 package com.example.civichub
 
-import android.R.attr.button
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.util.Base64
@@ -16,7 +14,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -49,8 +46,8 @@ class IssueDetailsActivity : AppCompatActivity() {
     private var followJsonObject: JSONObject? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var userGuid:String
-    val SUBMIT_SOLUTION = 1
-    val SUBMIT_IMPLEMENTATION = 2
+    private val SUBMIT_SOLUTION = 1
+    private val SUBMIT_IMPLEMENTATION = 2
     private var scale by Delegates.notNull<Float>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -367,7 +364,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                         followButton.setImageResource(android.R.drawable.btn_star_big_on)
                         followJsonObject = JSONObject(it)
                     },
-                    { error ->
+                    {
 
 //                        if (error.message!! == "Follow not found"){
 //                            followButton.setBackgroundColor(Color.RED)
@@ -381,7 +378,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 queue.add(followRequest)
 
                 val addFollowRequestUrl = "http://10.0.2.2:5000/api/Follow"
-                var addFollowRequestBody = JSONObject()
+                val addFollowRequestBody = JSONObject()
                 addFollowRequestBody.put("userId", userId)
                 addFollowRequestBody.put("issueId", issueId)
                 val addFollowRequest = JsonObjectRequest(Request.Method.POST, addFollowRequestUrl, addFollowRequestBody,
@@ -427,7 +424,7 @@ class IssueDetailsActivity : AppCompatActivity() {
     }
 
 
-    fun addApproveRevokeButtons(){
+    private fun addApproveRevokeButtons(){
         //add buttons
 
         if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 0 &&
@@ -461,7 +458,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
-                        Toast.makeText(this, "Reclamatia a fost aprobata",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Reclamatia a fost aprobata",Toast.LENGTH_SHORT).show()
                         recreate()
                     },
                     {
@@ -475,7 +472,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestRevoke = JsonObjectRequest(
                     Request.Method.POST, urlRevoke, null,
                     {
-                        Toast.makeText(this, "Reclamatia a fost respinsa",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Reclamatia a fost respinsa",Toast.LENGTH_SHORT).show()
                         recreate()
                     },
                     {
@@ -487,7 +484,7 @@ class IssueDetailsActivity : AppCompatActivity() {
     }
 
 
-    fun addApproveRevokeSolutionButtons(){
+    private fun addApproveRevokeSolutionButtons(){
         //add buttons
 
         if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 2 &&
@@ -521,7 +518,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
-                        Toast.makeText(this, "Solutia a fost aprobata",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Solutia a fost aprobata",Toast.LENGTH_SHORT).show()
                         recreate()
                     },
                     {
@@ -538,7 +535,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                         val requestRevoke = JsonObjectRequest(
                             Request.Method.POST, urlRevoke, null,
                             {
-                                Toast.makeText(this, "Solutia a fost respinsa",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Solutia a fost respinsa",Toast.LENGTH_SHORT).show()
                                 recreate()
                             },
                             {
@@ -553,23 +550,23 @@ class IssueDetailsActivity : AppCompatActivity() {
         }
     }
 
-    fun showdialog(callback: (result: String?) -> Unit){
-        val builder: AlertDialog.Builder = android.app.AlertDialog.Builder(this)
-        builder.setTitle("Title")
+    private fun showdialog(callback: (result: String?) -> Unit){
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle("Justificare")
 
 // Set up the input
         val input = EditText(this)
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setHint("Enter Text")
+        input.hint = "Introduceti motivul"
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
 // Set up the buttons
-        builder.setPositiveButton("OK") { dialog, which ->
+        builder.setPositiveButton("OK") { _, _ ->
             // Here you get get input text from the Edittext
             callback(input.text.toString())
         }
-        builder.setNegativeButton("Cancel") { dialog, which ->
+        builder.setNegativeButton("Renunta") { dialog, _ ->
             dialog.cancel()
             callback(null)
         }
@@ -577,7 +574,7 @@ class IssueDetailsActivity : AppCompatActivity() {
         builder.show()
     }
 
-    fun addApproveRevokeImplementationButtons(){
+    private fun addApproveRevokeImplementationButtons(){
         //add buttons
 
         if (jsonObjectResponse.getJSONObject("lastIssueState").getInt("type") == 4 &&
@@ -611,7 +608,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                 val requestApprove = JsonObjectRequest(
                     Request.Method.POST, urlApprove, null,
                     {
-                        Toast.makeText(this, "Modul de implementare a fost aprobat",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Modul de implementare a fost aprobat",Toast.LENGTH_SHORT).show()
                         recreate()
                     },
                     {
@@ -628,7 +625,7 @@ class IssueDetailsActivity : AppCompatActivity() {
                         val requestRevoke = JsonObjectRequest(
                             Request.Method.POST, urlRevoke, null,
                             {
-                                Toast.makeText(this, "Modul de implementare a fost respins",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Modul de implementare a fost respins",Toast.LENGTH_SHORT).show()
                                 recreate()
                             },
                             {
