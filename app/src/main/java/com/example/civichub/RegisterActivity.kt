@@ -9,15 +9,19 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.core.app.NavUtils
+import androidx.core.widget.doOnTextChanged
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.civichub.ui.login.LoginActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONException
 import org.json.JSONObject
 import java.nio.charset.Charset
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -29,10 +33,57 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         setContentView(R.layout.activity_register)
 
         val registerButton = findViewById<Button>(R.id.registerButton)
-        val emailInput = findViewById<TextView>(R.id.editTextTextEmailAddress)
-        val passwordInput1 = findViewById<TextView>(R.id.editTextTextPassword)
-        val passwordInput2 = findViewById<TextView>(R.id.editTextTextPassword2)
+        val emailTextInputLayout = findViewById<TextInputLayout>(R.id.EmailTextInputLayout)
+        val emailTextInputEditText = findViewById<TextInputEditText>(R.id.EmailTextInputEditText)
+
+        val passwordTextInputLayout = findViewById<TextInputLayout>(R.id.passwordTextInputLayout)
+        val passwordTextInputEditText = findViewById<TextInputEditText>(R.id.passwordTextInputEditText)
+
+        val repeatPasswordTextInputLayout = findViewById<TextInputLayout>(R.id.repeatPasswordTextInputLayout)
+        val repeatPasswordTextInputEditText = findViewById<TextInputEditText>(R.id.repeatPasswordTextInputEditText)
+
         spinner = findViewById(R.id.spinner)
+
+        registerButton.isEnabled = false
+
+        emailTextInputEditText.doOnTextChanged { text, start, before, count ->
+            if (!Pattern.matches("[A-Za-z0-9_]{3,}@[A-za-z]{3,10}\\.[a-z]{3}", text ?: "")){
+                emailTextInputLayout.error = applicationContext.resources.getString(R.string.invalid_mail)
+                registerButton.isEnabled = false
+            }else{
+                emailTextInputLayout.error = null
+                if (passwordTextInputLayout.error == null &&  repeatPasswordTextInputLayout.error == null
+                    && (passwordTextInputEditText.text?:"").toString().length >= 5){
+                    registerButton.isEnabled = true
+                }
+            }
+        }
+
+        passwordTextInputEditText.doOnTextChanged { text, start, before, count ->
+            if (!Pattern.matches(".{5,}", text ?: "")){
+                passwordTextInputLayout.error = applicationContext.resources.getString(R.string.minimum_length_password_edit_text)
+                registerButton.isEnabled = false
+            }else{
+                passwordTextInputLayout.error = null
+                if (emailTextInputLayout.error == null &&  repeatPasswordTextInputLayout.error == null
+                    && (passwordTextInputEditText.text?:"").toString() == (repeatPasswordTextInputEditText?:"z").toString() ){
+                    registerButton.isEnabled = true
+                }
+            }
+        }
+
+        repeatPasswordTextInputEditText.doOnTextChanged { text, start, before, count ->
+            if ((text?:"").toString() != passwordTextInputEditText.text.toString()){
+                repeatPasswordTextInputLayout.error = applicationContext.resources.getString(R.string.wrong_passwords)
+                registerButton.isEnabled = false
+            }else{
+                repeatPasswordTextInputLayout.error = null
+                if (passwordTextInputLayout.error == null &&  emailTextInputLayout.error == null
+                    && (Pattern.matches(".{5,}", text ?: ""))){
+                    registerButton.isEnabled = true
+                }
+            }
+        }
 
         registerButton.setOnClickListener {
             it.isEnabled = false
@@ -40,8 +91,8 @@ class RegisterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             val queue = Volley.newRequestQueue(this)
             val url = "http://10.0.2.2:5000/api/auth/register"
             var jsonBody = JSONObject()
-            jsonBody.put("mail", emailInput.text)
-            jsonBody.put("password", passwordInput1.text)
+            jsonBody.put("mail", emailTextInputEditText.text)
+            jsonBody.put("password", passwordTextInputEditText.text)
             jsonBody.put("tip", userTypeSelected)
             val jsonText = jsonBody.toString()
 

@@ -57,7 +57,7 @@ class SubmitSolutionActivity : AppCompatActivity() {
         submitButton.isEnabled = false
 
         descriptionInput.doOnTextChanged { text, start, before, count ->
-            if (count < 3) {
+            if ((text?:"").length < 3) {
                 descriptionTextInputLayout.error = applicationContext.resources.getString(R.string.minimum_length_edit_text)
                 submitButton.isEnabled = false
             }else{

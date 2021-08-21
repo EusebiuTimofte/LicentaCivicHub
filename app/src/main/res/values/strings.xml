@@ -155,4 +155,7 @@
     <string name="action_settings">Settings</string>
     <string name="issue_details_scroll_view">issue details scroll view</string>
     <string name="minimum_length_edit_text">Minimum 3 caractere</string>
+    <string name="minimum_length_password_edit_text">Minimum 5 caractere</string>
+    <string name="invalid_mail">Mail invalid</string>
+    <string name="wrong_passwords">Parolele introduse nu sunt identice</string>
 </resources>
