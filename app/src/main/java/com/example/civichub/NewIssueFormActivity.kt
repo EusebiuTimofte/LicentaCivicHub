@@ -14,14 +14,14 @@ import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -35,8 +35,10 @@ class NewIssueFormActivity : AppCompatActivity() {
     private lateinit var imagePicked: ImageView
     private lateinit var base64Codes: MutableList<String>
     private lateinit var addIssueButton: Button
-    private lateinit var titleValue:TextView
-    private lateinit var descriptionValue: TextView
+    private lateinit var titleValue: TextInputEditText
+    private lateinit var titleInputLayout: TextInputLayout
+    private lateinit var descriptionValue: TextInputEditText
+    private lateinit var descriptionInputLayout: TextInputLayout
     private lateinit var addressValue: TextView
     val REQUEST_IMAGE_GET = 1
 
@@ -67,9 +69,40 @@ class NewIssueFormActivity : AppCompatActivity() {
         imagePicked = findViewById(R.id.imageView)
         base64Codes = mutableListOf()
         addIssueButton = findViewById(R.id.addIssueButton)
-        titleValue = findViewById(R.id.titleValue)
-        descriptionValue = findViewById(R.id.descriptionEditText)
+        titleValue = findViewById(R.id.titleTextInputEditText)
+        titleInputLayout = findViewById(R.id.titleTextInputLayout)
+        descriptionValue = findViewById(R.id.descriptionTextInputEditText)
+        descriptionInputLayout = findViewById(R.id.descriptionTextInputLayout)
+        titleValue.doOnTextChanged { text, start, before, count ->
+            titleInputLayout.error = null
+            if (descriptionInputLayout.error == null){
+                addIssueButton.isEnabled = true
+            }
+
+        }
+
+        descriptionValue.doOnTextChanged { text, start, before, count ->
+            descriptionInputLayout.error = null
+            if (titleInputLayout.error == null){
+                addIssueButton.isEnabled = true
+            }
+
+        }
         addIssueButton.setOnClickListener {
+
+            if (titleValue.text!!.length  < 3){
+                titleInputLayout.error = applicationContext.resources.getString(R.string.minimum_length_edit_text)
+                addIssueButton.isEnabled = false
+                return@setOnClickListener
+            }
+
+            if (descriptionValue.text!!.length  < 3){
+                descriptionInputLayout.error = applicationContext.resources.getString(R.string.minimum_length_edit_text)
+                addIssueButton.isEnabled = false
+                return@setOnClickListener
+            }
+
+
             val sharedPref = getSharedPreferences(getString(R.string.shared_preferences_file), Context.MODE_PRIVATE)
             val queue = Volley.newRequestQueue(this.applicationContext)
             val url = "http://10.0.2.2:5000/api/issue"

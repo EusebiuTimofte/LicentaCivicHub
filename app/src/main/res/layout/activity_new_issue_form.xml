@@ -34,23 +34,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addressTextViewLabel" />
 
-            <TextView
-                android:id="@+id/descriptionTextViewLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/issue_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleValue" />
 
-            <EditText
-                android:id="@+id/descriptionEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/descriptionTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginEnd="24dp"
                 android:autofillHints="username"
                 android:ems="10"
                 android:gravity="start|top"
@@ -59,7 +50,17 @@
                 android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionTextViewLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/titleTextInputLayout"
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/descriptionTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/issue_description"
+                    android:minHeight="48dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/pickImagesButton"
@@ -69,7 +70,7 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/pick_images_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextInputLayout" />
 
 
             <Button
@@ -95,29 +96,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/pickImagesButton"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <TextView
-                android:id="@+id/titleLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/add_issue_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addressTextViewValue" />
-
-            <EditText
-                android:id="@+id/titleValue"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/titleTextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginEnd="24dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/addressTextViewValue"
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/titleTextInputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_issue_title"
+                    android:minHeight="48dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
